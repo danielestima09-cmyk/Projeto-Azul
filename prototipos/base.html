@@ -85,6 +85,10 @@
   .proj-foot{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
   .mini{font-size:12px;color:var(--mut);display:flex;align-items:center;gap:5px}
   .tag-vert{font-size:11px;background:var(--azul-soft);color:var(--azul-deep);font-weight:700;padding:2px 9px;border-radius:20px}
+  .prazo{font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:8px;display:inline-flex;align-items:center;gap:6px;margin:2px 0 4px}
+  .prazo-ok{background:#E3F6E9;color:#1F9D55}
+  .prazo-warn{background:#FFF1DA;color:#B7791F}
+  .prazo-late{background:#FCE4E6;color:#C0263A}
 
   /* detail */
   .tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:18px 0}
@@ -380,7 +384,7 @@ const PROJETOS = [
    publico:'Famílias classe A/B e viajantes a lazer do interior de SP',
    metas:'Ocupação média de 82% nos 3 primeiros meses',orc:850000,
    kpis:'Load factor, receita ancilar, awareness da rota',resultados:'20 mil passagens no pré-lançamento',
-   criadoEm:'02/06/2026'},
+   criadoEm:'02/06/2026',prazoResposta:'2026-07-20'},
   {id:'p2',nome:'Promoção TudoAzul Pontos em Dobro',vert:'v3',criador:'u1',status:'revisao',
    objetivo:'Acelerar acúmulo de pontos e engajamento de membros TudoAzul no inverno.',
    publico:'Membros TudoAzul ativos e inativos há 6+ meses',
@@ -411,6 +415,12 @@ const PROJETOS = [
    metas:'R$ 40 mi em vendas na semana',orc:900000,
    kpis:'GMV, ticket médio, conversão',resultados:'R$ 40 mi em GMV',
    criadoEm:'08/07/2026'},
+  {id:'p7',nome:'Divulgação Novo App Azul',vert:'v2',criador:'u1',status:'analise',
+   objetivo:'Anunciar a nova versão do app da Azul com check-in mais rápido.',
+   publico:'Clientes que usam o app com frequência',
+   metas:'+20% de adoção da nova versão em 60 dias',orc:360000,
+   kpis:'Downloads, adoção, avaliação nas lojas',resultados:'Adoção +20%',
+   criadoEm:'28/06/2026',prazoResposta:'2026-07-11'},
 ];
 const COMENTARIOS = [
   {id:'c1',proj:'p1',autor:'u3',topico:'Público-alvo',prio:'alta',vis:'publico',
@@ -461,6 +471,20 @@ const userById=id=>USERS.find(u=>u.id===id)||{nome:'—',cargo:''};
 const vertById=id=>(VERTENTES.find(v=>v.id===id)||{nome:'—'}).nome;
 const initials=n=>n.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
 const money=v=>'R$ '+v.toLocaleString('pt-BR');
+/* Prazo de resposta do Marketing (SLA) — data de referência do protótipo: 15/07/2026 */
+const HOJE=new Date(2026,6,15);
+function parseISO(d){const a=String(d).split('-').map(Number);return new Date(a[0],a[1]-1,a[2]);}
+function isMarketing(cargo){return cargo==='Membro do Marketing'||cargo==='Coordenador de Marketing';}
+function prazoInfo(x){
+  if(!x.prazoResposta)return null;
+  const dt=parseISO(x.prazoResposta);
+  const diff=Math.round((dt-HOJE)/86400000);
+  const br=dt.toLocaleDateString('pt-BR');
+  if(diff<0)return{cls:'prazo-late',txt:'⏰ Resposta vencida há '+(-diff)+' dia(s) (era '+br+')',late:true};
+  if(diff===0)return{cls:'prazo-late',txt:'⏰ Responder ainda hoje ('+br+')',late:false};
+  if(diff<=2)return{cls:'prazo-warn',txt:'⏳ Responder em '+diff+' dia(s) · até '+br,late:false};
+  return{cls:'prazo-ok',txt:'🗓️ Responder até '+br+' · faltam '+diff+' dias',late:false};
+}
 
 function setPersona(id){state.persona=id;state.view='projetos';state.proj=null;render()}
 function go(view){state.view=view;state.proj=null;render();window.scrollTo(0,0)}
@@ -545,12 +569,19 @@ function viewProjetos(){
   if(state.fBusca)list=list.filter(x=>x.nome.toLowerCase().includes(state.fBusca.toLowerCase()));
   const canCreate=p.cargo==='Funcionário de Vertente';
   const heads={'Funcionário de Vertente':'Projetos que você criou','Diretor de Vertente':'Projetos da sua vertente','Membro do Marketing':'Projetos aguardando parecer','Coordenador de Marketing':'Pendências de aprovação','Administrador':'Todos os projetos'};
+  let mktBanner='';
+  if(isMarketing(p.cargo)){
+    const pend=list.filter(x=>x.status==='analise');
+    const atrasados=pend.filter(x=>{const i=prazoInfo(x);return i&&i.late;});
+    if(pend.length)mktBanner=`<div class="banner">📅 Você tem <b>${pend.length}</b> projeto(s) aguardando sua resposta${atrasados.length?` — <b style="color:#C0263A">${atrasados.length} com prazo vencido</b>`:''}. Responda dentro do prazo indicado em cada card.</div>`;
+  }
   return `
   <div class="page-head">
     <div><h1>${heads[p.cargo]||'Projetos'}</h1><p>${list.length} projeto(s) · visão de ${p.cargo}</p></div>
     ${canCreate?`<button class="btn" onclick="modalCriar()">＋ Criar projeto</button>`:''}
   </div>
   ${p.cargo==='Diretor de Vertente'?`<div class="banner">📌 Você tem <b>${PROJETOS.filter(x=>x.status==='revisao'&&x.vert===p.vert).length}</b> projeto(s) aguardando sua revisão.</div>`:''}
+  ${mktBanner}
   <div class="filters">
     <input placeholder="🔎 Buscar projeto..." value="${state.fBusca}" oninput="state.fBusca=this.value;render()">
     <select onchange="state.fStatus=this.value;render()"><option value="">Todos os status</option>${Object.entries(STATUS).map(([k,v])=>`<option value="${k}" ${state.fStatus===k?'selected':''}>${v.label}</option>`).join('')}</select>
@@ -560,12 +591,15 @@ function viewProjetos(){
 }
 function projCard(x){
   const st=STATUS[x.status];const nc=COMENTARIOS.filter(c=>c.proj===x.id).length;const na=ANEXOS.filter(a=>a.proj===x.id).length;
+  const pu=userById(state.persona);
+  const pi=(isMarketing(pu.cargo)&&x.status==='analise')?prazoInfo(x):null;
   return `<div class="proj-card" style="border-left-color:${st.color}" onclick="openProj('${x.id}')">
     <div style="display:flex;justify-content:space-between;align-items:start;gap:8px">
       <h3>${x.nome}</h3><span class="badge-status ${st.cls}">${st.label}</span>
     </div>
     <div class="proj-meta"><span class="tag-vert">${vertById(x.vert)}</span></div>
     <p style="color:var(--mut);font-size:12.5px">${x.objetivo}</p>
+    ${pi?`<div class="prazo ${pi.cls}">${pi.txt}</div>`:''}
     <div class="proj-foot">
       <span class="mini">👤 ${userById(x.criador).nome.split(' ')[0]} · ${x.criadoEm}</span>
       <span class="mini">💬 ${nc} · 📎 ${na}</span>
