@@ -63,16 +63,16 @@ Desenhe/mostre esta sequência (é o coração do aprendizado):
 
 **O que dizer:**
 > "Aqui a gente respondeu: qual o problema, quem são as pessoas que usam, e o que elas precisam fazer.
-> Repare que definimos **5 tipos de usuário** — chamamos de *personas*."
+> Repare que definimos os **tipos de usuário** — chamamos de *personas*."
 
-Mostre as personas (Funcionário, Diretor, Marketing, Coordenador, Presidente) e explique com uma frase cada.
+Mostre as personas (Funcionário, Diretor, Marketing, Coordenador — e o Administrador do sistema) e explique com uma frase cada.
 
 **💡 Conceito: persona.** É um "personagem" que representa um tipo de usuário real, com o que ele pode e não pode fazer.
 
 - 💻 **Tech:** "cada persona vai virar um *nível de permissão* no sistema — quem pode aprovar, quem só comenta."
 - 📊 **Business:** "personas ajudam a desenhar o produto para gente real, não para um usuário genérico."
 
-**Pergunta:** "Se vocês fossem o *Presidente* da Azul, o que gostariam de ver ao abrir o app?"
+**Pergunta:** "Se vocês fossem o *Coordenador de Marketing* da Azul, o que gostariam de ver ao abrir o app?"
 
 ---
 
@@ -139,8 +139,8 @@ Dê 2 ou 3 exemplos concretos e fáceis:
 2. Abra a **Base**. No topo direito, use o **seletor de persona**:
    - Entre como **Funcionário** → mostre "Criar projeto".
    - Troque para **Diretor** → aparece "Aprovar / Devolver".
-   - Troque para **Presidente** → aparece o **Dashboard** com gráficos.
-   - **Destaque:** "reparem que a tela MUDA conforme quem entra. Isso são as *permissões* que definimos lá no Discovery!"
+   - Troque para **Coordenador de Marketing** → aparece o **Dashboard** consolidado com gráficos.
+   - **Destaque:** "reparem que a tela MUDA conforme quem entra. Isso são as *permissões* que definimos lá no Discovery! O Dashboard, por exemplo, aparece só para o Coordenador e os Diretores."
 3. Abra um projeto e mostre as abas (comentários, anexos, histórico).
 4. Agora abra a **Enriquecida** e mostre o diferencial:
    - A aba **Revisão da Arte** (E2) — clique num marcador na imagem.

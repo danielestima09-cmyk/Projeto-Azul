@@ -36,10 +36,9 @@ dentro do processo desde a concepção.
 | Persona | Papel | Permissões | Workflow principal |
 |---|---|---|---|
 | Funcionário de Vertente | Cria projetos na sua área | Criar/editar (em Rascunho), anexar arquivos, comentar (público), submeter | Cria → submete ao Diretor → acompanha feedback do Marketing |
-| Diretor de Vertente | Revisa projetos da sua área | Revisar, aprovar p/ Marketing, devolver com justificativa, comentar | Recebe notificação → revisa → aprova ou devolve |
+| Diretor de Vertente | Revisa projetos da sua área | Revisar, aprovar p/ Marketing, devolver com justificativa, comentar, ver dashboard da sua vertente | Recebe notificação → revisa → aprova ou devolve |
 | Membro do Marketing | Analisa projetos | Comentar com rubrica (interno/público), participar de reuniões | Recebe projeto → analisa → comenta → participa de reunião |
-| Coordenador de Marketing | Palavra final sobre o projeto | Aprovar/reprovar, agendar reuniões, comentar | Analisa pareceres → coordena reunião → aprova ou devolve |
-| Presidente | Visão geral de todos os projetos | Acessar dashboard, ver todos os comentários, exportar relatórios | Acompanha indicadores → participa de reuniões de desempenho |
+| Coordenador de Marketing | Palavra final sobre o projeto | Aprovar/reprovar, agendar reuniões, comentar, ver dashboard consolidado e exportar relatórios | Analisa pareceres → coordena reunião → aprova ou devolve |
 | Administrador | Gestão de acessos | Cadastrar usuários, cargos e vertentes | Mantém cadastros base do sistema |
 
 ---
@@ -119,7 +118,7 @@ organizado sobre cada projeto, evitando comentários soltos.
 **Critérios de Aceite:**
 - [ ] Comentário exige tópico, descrição, prioridade e visibilidade.
 - [ ] @menção dispara notificação ao mencionado (respeitando permissão de ver o comentário).
-- [ ] Vertente nunca vê comentários internos; Presidente vê todos.
+- [ ] Vertente nunca vê comentários internos (restritos ao Marketing).
 - [ ] Filtro por tópico, prioridade e visibilidade.
 
 ---
@@ -159,8 +158,9 @@ internas para deliberação de projetos.
 
 ### M4 — Dashboard e Relatórios
 
-**Descrição:** Visão consolidada de todos os projetos para o Presidente e reuniões de desempenho,
-com indicadores, filtros e exportação de relatórios.
+**Descrição:** Visão consolidada para o Coordenador de Marketing (todos os projetos) e para os
+Diretores (projetos da sua vertente), apoiando as reuniões de desempenho, com indicadores, filtros e
+exportação de relatórios.
 
 **Entradas e Saídas:**
 
@@ -172,7 +172,7 @@ com indicadores, filtros e exportação de relatórios.
 **Regras de Negócio aplicáveis:** —
 
 **Fluxo Principal (Happy Path):**
-1. Presidente acessa dashboard.
+1. Coordenador de Marketing acessa o dashboard consolidado (o Diretor vê o da sua vertente).
 2. Aplica filtro por vertente.
 3. Visualiza gráficos e indicadores.
 4. Exporta relatório em PDF para reunião de desempenho.
@@ -221,8 +221,7 @@ com indicadores, filtros e exportação de relatórios.
 | Funcionário de Vertente | Lista de projetos + botão "Criar projeto" | Foco nos projetos que criou |
 | Diretor de Vertente | Lista de projetos pendentes de revisão | Badge de notificação |
 | Membro do Marketing | Lista de projetos em "Em análise" | Foco em projetos aguardando parecer |
-| Coordenador de Marketing | Pendências de aprovação + agenda de reuniões | Ações de aprovar/reprovar |
-| Presidente | Dashboard com indicadores e gráficos | Visão consolidada, filtros, exportação |
+| Coordenador de Marketing | Pendências de aprovação + dashboard consolidado | Aprovar/reprovar, exportar relatórios |
 
 **Componentes complexos:** gráficos de indicadores, lista de projetos com filtros e busca, formulário
 de criação de projeto, sistema de comentários com rubrica, calendário/agendamento de reuniões.
@@ -238,7 +237,7 @@ de criação de projeto, sistema de comentários com rubrica, calendário/agenda
 | RN-01 | Projeto exige aprovação do Diretor | Funcionário submete projeto | Não avança ao Marketing sem revisão do Diretor | M1 |
 | RN-02 | Coordenador tem palavra final | Projeto em "Em análise" | Decisão do Coordenador aprova ou retorna | M3 |
 | RN-03 | Edição de projeto | Projeto fora de "Rascunho" | Edição só permitida em Rascunho; após submissão, apenas com devolução | M1 |
-| RN-04 | Visibilidade de comentários | Comentário criado | Interno (Marketing + Presidente) vs Público (todos os envolvidos) | M2, M5 |
+| RN-04 | Visibilidade de comentários | Comentário criado | Interno (só Marketing) vs Público (todos os envolvidos) | M2, M5 |
 | RN-05 | Devolução/reprovação | Diretor ou Coordenador devolve | Sempre exige justificativa registrada | M1, M3 |
 | RN-06 | Anexos | Arquivo enviado | Fica vinculado ao projeto e visível a todos os envolvidos | M1 |
 
@@ -299,6 +298,6 @@ offline; versionamento de projeto; múltiplos cargos por usuário.
 - **Vertente:** departamento/área da empresa que origina projetos.
 - **Vertical comandante:** a vertente responsável (dona) por um projeto.
 - **Rubrica de comentário:** estrutura obrigatória do comentário (tópico, prioridade, visibilidade).
-- **Comentário interno:** visível apenas ao Marketing e ao Presidente.
+- **Comentário interno:** visível apenas ao Marketing.
 - **Comentário público:** visível a todos os envolvidos no projeto.
 - **Envolvidos:** criador, diretor da vertente, membros do Marketing atribuídos e coordenador.

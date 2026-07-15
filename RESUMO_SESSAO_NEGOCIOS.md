@@ -70,8 +70,8 @@ será possível **anexar arquivos**; e cada pessoa terá **um cargo** na ferrame
 - **Funcionário da área** — cria o projeto e acompanha o retorno.
 - **Diretor da área** — revisa e libera para o Marketing.
 - **Marketing (equipe)** — analisa e comenta de forma organizada.
-- **Coordenador do Marketing** — dá a palavra final e agenda reuniões.
-- **Presidência** — enxerga tudo, com painéis e relatórios.
+- **Coordenador do Marketing** — dá a palavra final, agenda reuniões e acompanha os painéis e relatórios.
+- **Diretor da área** — acompanha o painel dos projetos da sua área.
 
 > ✅ **Com tudo isso já estávamos prontos para partir para o detalhamento da ferramenta.**
 
