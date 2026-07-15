@@ -1,0 +1,273 @@
+/* chatbot.css — Assistente de Avaliação (Azul Brand Operating System)
+   Estilos isolados com prefixo .abos- para não conflitar com o protótipo.
+   Responsivo (desktop/mobile), com estados de foco visíveis (acessibilidade). */
+
+.abos-chatbot,
+.abos-chatbot * {
+  box-sizing: border-box;
+}
+
+.abos-chatbot {
+  --abos-deep: #002A8F;
+  --abos-blue: #0060B7;
+  --abos-sky: #00A3E0;
+  --abos-ora: #F58220;
+  --abos-ink: #16233D;
+  --abos-mut: #5B6B84;
+  --abos-line: #E2E8F2;
+  --abos-bg: #F4F7FC;
+  --abos-user: #0060B7;
+  font-family: "Segoe UI", Roboto, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--abos-ink);
+}
+
+/* ---------- Botão flutuante ---------- */
+.abos-fab {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 2147483000;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--abos-deep), var(--abos-blue));
+  color: #fff;
+  font-size: 26px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 8px 26px rgba(0, 42, 143, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.abos-fab:hover { transform: translateY(-2px) scale(1.03); }
+.abos-fab:focus-visible { outline: 3px solid var(--abos-sky); outline-offset: 3px; }
+.abos-fab .abos-fab-badge {
+  position: absolute;
+  top: -3px; right: -3px;
+  background: var(--abos-ora);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  padding: 0 5px;
+  border: 2px solid #fff;
+}
+.abos-chatbot[data-open="true"] .abos-fab { transform: scale(0.9); opacity: 0.9; }
+
+/* ---------- Janela do chat ---------- */
+.abos-window {
+  position: fixed;
+  right: 22px;
+  bottom: 92px;
+  z-index: 2147483000;
+  width: 380px;
+  max-width: calc(100vw - 32px);
+  height: 560px;
+  max-height: calc(100vh - 120px);
+  background: #fff;
+  border: 1px solid var(--abos-line);
+  border-radius: 16px;
+  box-shadow: 0 24px 70px rgba(0, 42, 143, 0.28);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform-origin: bottom right;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.abos-chatbot[data-open="false"] .abos-window {
+  opacity: 0;
+  transform: translateY(12px) scale(0.96);
+  pointer-events: none;
+  visibility: hidden;
+}
+.abos-chatbot[data-open="true"] .abos-window {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+}
+.abos-chatbot[data-minimized="true"] .abos-window {
+  height: 56px;
+  max-height: 56px;
+}
+.abos-chatbot[data-minimized="true"] .abos-body,
+.abos-chatbot[data-minimized="true"] .abos-composer { display: none; }
+
+/* ---------- Cabeçalho ---------- */
+.abos-header {
+  background: linear-gradient(100deg, var(--abos-deep), var(--abos-blue));
+  color: #fff;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.abos-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  display: grid; place-items: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.abos-title { flex: 1; min-width: 0; }
+.abos-title strong { display: block; font-size: 14px; font-weight: 700; }
+.abos-title span { display: block; font-size: 11px; opacity: 0.85; }
+.abos-header-btn {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  border: none;
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  display: grid; place-items: center;
+}
+.abos-header-btn:hover { background: rgba(255, 255, 255, 0.28); }
+.abos-header-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+/* ---------- Corpo / mensagens ---------- */
+.abos-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 14px;
+  background: var(--abos-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.abos-msg {
+  max-width: 85%;
+  padding: 10px 13px;
+  border-radius: 14px;
+  font-size: 13.5px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  animation: abos-in 0.18s ease;
+}
+@keyframes abos-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.abos-msg-bot {
+  align-self: flex-start;
+  background: #fff;
+  border: 1px solid var(--abos-line);
+  border-bottom-left-radius: 4px;
+  color: var(--abos-ink);
+}
+.abos-msg-user {
+  align-self: flex-end;
+  background: var(--abos-user);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+.abos-msg-error {
+  align-self: center;
+  background: #FCE4E6;
+  color: #C0263A;
+  border: 1px solid #F3C6CE;
+  font-size: 12.5px;
+  max-width: 95%;
+}
+
+/* Indicador de "digitando" */
+.abos-typing {
+  align-self: flex-start;
+  background: #fff;
+  border: 1px solid var(--abos-line);
+  border-radius: 14px;
+  border-bottom-left-radius: 4px;
+  padding: 12px 14px;
+  display: inline-flex;
+  gap: 4px;
+}
+.abos-typing i {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--abos-mut);
+  display: inline-block;
+  animation: abos-blink 1.2s infinite ease-in-out;
+}
+.abos-typing i:nth-child(2) { animation-delay: 0.2s; }
+.abos-typing i:nth-child(3) { animation-delay: 0.4s; }
+@keyframes abos-blink { 0%, 80%, 100% { opacity: 0.25; } 40% { opacity: 1; } }
+
+/* ---------- Composer ---------- */
+.abos-composer {
+  border-top: 1px solid var(--abos-line);
+  padding: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  background: #fff;
+  flex-shrink: 0;
+}
+.abos-input {
+  flex: 1;
+  resize: none;
+  border: 1px solid var(--abos-line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 13.5px;
+  max-height: 120px;
+  outline: none;
+  color: var(--abos-ink);
+}
+.abos-input:focus { border-color: var(--abos-blue); }
+.abos-send {
+  background: var(--abos-blue);
+  color: #fff;
+  border: none;
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  display: grid; place-items: center;
+  flex-shrink: 0;
+}
+.abos-send:hover { background: var(--abos-deep); }
+.abos-send:disabled { opacity: 0.5; cursor: not-allowed; }
+.abos-send:focus-visible { outline: 2px solid var(--abos-sky); outline-offset: 2px; }
+
+.abos-disclaimer {
+  font-size: 10.5px;
+  color: var(--abos-mut);
+  text-align: center;
+  padding: 0 12px 8px;
+  background: #fff;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 480px) {
+  .abos-window {
+    right: 0; bottom: 0;
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+  .abos-fab { right: 16px; bottom: 16px; }
+}
+
+/* Acessibilidade: respeita preferência de menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  .abos-msg, .abos-window, .abos-fab { animation: none; transition: none; }
+}
+
+/* Utilitário para leitores de tela */
+.abos-sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

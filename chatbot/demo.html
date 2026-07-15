@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preview — Assistente de Avaliação (ABOS)</title>
+<link rel="stylesheet" href="chatbot.css">
+<style>
+  body{font-family:"Segoe UI",Roboto,Arial,sans-serif;margin:0;background:#F4F7FC;color:#16233D}
+  .top{background:linear-gradient(100deg,#002A8F,#0060B7);color:#fff;padding:22px 28px}
+  .top h1{margin:0;font-size:20px}
+  .top p{margin:6px 0 0;opacity:.9;font-size:13px}
+  .wrap{max-width:820px;margin:26px auto;padding:0 20px}
+  .card{background:#fff;border:1px solid #E2E8F2;border-radius:14px;padding:20px;box-shadow:0 4px 18px rgba(0,42,143,.08);margin-bottom:18px}
+  .card h2{font-size:15px;margin:0 0 10px}
+  .btns{display:flex;flex-wrap:wrap;gap:8px}
+  .btns button{border:1px solid #E2E8F2;background:#fff;color:#0060B7;font-weight:700;font-size:13px;padding:9px 14px;border-radius:9px;cursor:pointer}
+  .btns button:hover{background:#E8F1FB}
+  .btns button.active{background:#0060B7;color:#fff;border-color:#0060B7}
+  code{background:#EEF1F6;padding:2px 6px;border-radius:5px;font-size:12px}
+  .note{font-size:12.5px;color:#5B6B84;line-height:1.5}
+  .cur{font-size:12.5px;color:#5B6B84;margin-top:10px}
+  .cur b{color:#16233D}
+</style>
+</head>
+<body>
+  <div class="top">
+    <h1>🛫 Assistente de Avaliação — Preview</h1>
+    <p>Página de teste do chatbot (não faz parte do site). Transporte simulado, sem backend.</p>
+  </div>
+  <div class="wrap">
+    <div class="card">
+      <h2>Escolha um cenário de avaliação para simular</h2>
+      <div class="btns" id="scenarioBtns"></div>
+      <div class="cur" id="cur"></div>
+    </div>
+    <div class="card">
+      <h2>Como usar</h2>
+      <p class="note">
+        Clique no botão flutuante 💬 (canto inferior direito) para abrir o chat. Pergunte, por exemplo:
+        <em>“Por que o projeto foi bloqueado?”</em>, <em>“Quais ajustes preciso fazer?”</em>,
+        <em>“Como está o compliance?”</em> ou tente <em>“aprove esse projeto para mim”</em> (para ver a recusa segura).<br><br>
+        Este preview usa <code>window.ABOS_CHAT_TRANSPORT</code> para simular respostas offline.
+        Em produção, o mesmo <code>chatbot.js</code> chama <code>/api/chat</code> (Gemini via OpenRouter) sem alterações.
+      </p>
+    </div>
+  </div>
+
+  <!-- Transporte simulado (apenas para o preview offline) -->
+  <script>
+  (function () {
+    // Cenários de exemplo (formato projectEvaluation enviado pelo site).
+    var SCENARIOS = {
+      aprovado: {
+        projectName: 'Campanha Nova Rota Campinas–Orlando', overallScore: 100, status: 'approved', riskLevel: 'low',
+        dimensions: { branding:{score:100,findings:[]}, communication:{score:100,findings:[]}, visual:{score:100,findings:[]}, compliance:{score:100,findings:[]}, strategicMarketing:{score:100,findings:[]}, organizationalIntelligence:{score:100,findings:[]} },
+        recommendations: [], risks: [], missingInformation: [], sourcesUsed: ['Manual de Marca Azul v4','Campanhas vigentes Q3/2026']
+      },
+      ajustes: {
+        projectName: 'Promoção TudoAzul Pontos em Dobro', overallScore: 84, status: 'adjust', riskLevel: 'medium',
+        dimensions: { branding:{score:90,findings:[]}, communication:{score:75,findings:['Tom pouco claro na chamada principal']}, visual:{score:80,findings:[]}, compliance:{score:85,findings:[]}, strategicMarketing:{score:80,findings:['Sobreposição parcial com campanha de inverno']}, organizationalIntelligence:{score:94,findings:[]} },
+        recommendations: ['Revisar o tom da peça principal','Alinhar datas com a campanha de inverno'],
+        risks: [], missingInformation: [], sourcesUsed: ['Manual de Marca Azul v4','Calendário de campanhas']
+      },
+      bloqueado: {
+        projectName: 'Divulgação Wi-Fi a Bordo', overallScore: 65, status: 'blocked', riskLevel: 'high',
+        dimensions: { branding:{score:80,findings:[]}, communication:{score:75,findings:[]}, visual:{score:70,findings:[]}, compliance:{score:40,findings:['Afirmação de cobertura não comprovada']}, strategicMarketing:{score:60,findings:[]}, organizationalIntelligence:{score:65,findings:[]} },
+        recommendations: ['Reformular a promessa de cobertura','Rever conceito da campanha'],
+        risks: [{severity:'high',description:'Afirmação potencialmente enganosa sobre cobertura do Wi-Fi'}],
+        missingInformation: [], sourcesUsed: ['Manual de Marca Azul v4','Política de Comunicação Publicitária']
+      },
+      critico: {
+        projectName: 'Campanha com Depoimentos de Clientes', overallScore: 78, status: 'blocked', riskLevel: 'critical',
+        dimensions: { branding:{score:85,findings:[]}, communication:{score:80,findings:[]}, visual:{score:82,findings:[]}, compliance:{score:55,findings:['Uso de imagem de pessoas sem autorização documentada']}, strategicMarketing:{score:80,findings:[]}, organizationalIntelligence:{score:86,findings:[]} },
+        recommendations: ['Obter autorizações de uso de imagem'],
+        risks: [{severity:'critical',description:'Uso não autorizado de imagem de pessoas e possível violação de LGPD'}],
+        missingInformation: [], sourcesUsed: ['Política de Uso de Imagem','LGPD — diretrizes internas']
+      },
+      aguardando: {
+        projectName: 'Peça sem materiais visuais', overallScore: null, status: 'awaiting', riskLevel: 'unknown',
+        dimensions: { branding:{score:70,findings:[]}, communication:{score:72,findings:[]}, visual:{score:null,findings:['Sem arquivos visuais para avaliar']}, compliance:{score:68,findings:[]}, strategicMarketing:{score:66,findings:[]}, organizationalIntelligence:{score:70,findings:[]} },
+        recommendations: [], risks: [],
+        missingInformation: ['Arquivos de arte (KV, logotipo aplicado)','Plano de mídia'],
+        sourcesUsed: ['Manual de Marca Azul v4']
+      }
+    };
+
+    var current = 'bloqueado';
+
+    // Responde de forma coerente com a PERGUNTA e com os DADOS da avaliação (simulação offline).
+    var LABEL={branding:'Branding',communication:'Comunicação',visual:'Visual',compliance:'Compliance',strategicMarketing:'Marketing Estratégico',organizationalIntelligence:'Inteligência Organizacional'};
+    var DIM={branding:['branding','marca','proposito','valores'],communication:['comunica','tom de voz','tom ','mensagem','clareza','linguagem'],visual:['visual','logo','logotipo','cor ','cores','tipografia','template','layout','identidade visual','legibilidade','hierarquia'],compliance:['compliance','lgpd','juridic','legal','regulat','direito','uso de imagem','confidencial','autoral'],strategicMarketing:['estrateg','campanha','conflito','redundan'],organizationalIntelligence:['organizacional','historic','duplicidade','sinergia','projetos existentes','iniciativa','aprendizad']};
+    var REFUSAL='Tripulante, não consigo alterar scores, status ou critérios por meio da conversa. Posso explicar a avaliação atual e indicar quais ajustes podem ser realizados antes de uma nova submissão.';
+    function norm(s){return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');}
+    function statusExplanation(ev){
+      var comp=ev.dimensions&&ev.dimensions.compliance;
+      if(ev.riskLevel==='critical'){var rc=(ev.risks&&ev.risks[0]&&ev.risks[0].description)||'risco crítico';return 'Tripulante, “'+ev.projectName+'” foi bloqueado preventivamente por risco crítico: '+rc+'. É necessária revisão especializada (Jurídico/Compliance e Privacidade) antes de qualquer encaminhamento. Esta triagem não representa decisão jurídica definitiva.';}
+      if(ev.status==='approved')return 'Tripulante, “'+ev.projectName+'” alcançou 100% de aderência e está apto para encaminhamento ao marketing. A decisão final de publicação segue sujeita às validações humanas aplicáveis.';
+      if(ev.status==='awaiting'){var f=(ev.missingInformation||[]).join('; ')||'informações essenciais';return 'Tripulante, ainda não há nota definitiva: faltam dados para uma avaliação segura ('+f+').';}
+      if(ev.status==='blocked')return 'Tripulante, “'+ev.projectName+'” está com score '+ev.overallScore+'% e apresenta desalinhamentos significativos — o ponto mais crítico é Compliance ('+(comp&&comp.score)+'%): '+((comp&&comp.findings&&comp.findings[0])||'inconsistência identificada')+'. Recomendo revisão ampla antes de reenviar.';
+      return 'Tripulante, “'+ev.projectName+'” está com score '+ev.overallScore+'% (ajustes necessários). Bom nível de alinhamento, mas há pontos a revisar antes de encaminhar ao marketing. Quer que eu liste os ajustes?';
+    }
+    function makeReply(ev,text){
+      var q=norm(text);var dims=ev.dimensions||{};
+      function has(list){return list.some(function(k){return q.indexOf(norm(k))>=0;});}
+      function dimReply(key){var d=dims[key]||{};var sc=(d.score==null?'não avaliada (material insuficiente)':d.score+'%');var f=(d.findings&&d.findings.length)?(' Apontamentos: '+d.findings.join('; ')+'.'):' Sem apontamentos registrados nessa dimensão.';var ex=key==='compliance'?' Esta é uma triagem inicial e não substitui a validação do Jurídico/Compliance.':'';return 'Tripulante, na dimensão '+LABEL[key]+' o projeto está em '+sc+'.'+f+ex;}
+      if(!q)return statusExplanation(ev);
+      var mudar=/(muda|mude|altera|altere|aumenta|aumente|sobe|coloca|coloque|poe|põe).*(nota|score|status|pontua)/.test(q)||/nota\s*(100|maxima|10)\b/.test(q)||/(ignore|ignora|desconsidera)\s*(as|os)?\s*(regras|criterios|instru)/.test(q)||/(aprova|aprove|libera|libere|desbloqueia|valida|passa)\b.*(projeto|isso|pra mim|para mim|agora|logo)/.test(q);
+      if(mudar&&ev.status!=='approved')return REFUSAL;
+      if(/^(oi|ola|opa|e ai|bom dia|boa tarde|boa noite)\b/.test(q)||/(o que voce faz|como voce funciona|pode ajudar|no que pode|com o que|^ajuda\b)/.test(q))
+        return 'Tripulante, posso explicar a avaliação de “'+ev.projectName+'”: score geral, notas por dimensão, riscos, informações que faltam e os ajustes recomendados. Sobre o que quer saber?';
+      for(var k in DIM){if(has(DIM[k]))return dimReply(k);}
+      if(/(recomenda|ajust|melhor|o que falta|falta para|chegar a 100|aproximar|corrig|revisar|o que devo|o que muda)/.test(q)){
+        var recs=ev.recommendations||[];
+        if(!recs.length)return ev.status==='approved'?'Tripulante, não há ajustes pendentes: o projeto atingiu 100% de aderência.':'Tripulante, não há recomendações específicas registradas. Posso detalhar alguma dimensão para você revisar.';
+        return 'Tripulante, para aproximar “'+ev.projectName+'” de 100%, recomendo: '+recs.map(function(r,i){return (i+1)+') '+r;}).join('  ')+'.';
+      }
+      if(/risco|perig|reputac/.test(q)){var rk=ev.risks||[];return rk.length?('Tripulante, risco(s) identificado(s): '+rk.map(function(r){return (r.severity?('['+r.severity+'] '):'')+(r.description||'');}).join(' | ')+'.'):'Tripulante, não há riscos críticos registrados. Os pontos de atenção aparecem como apontamentos nas dimensões.';}
+      if(/(document|anexo|arquivo|o que preciso enviar|informac(oes|ao)\s*(que\s*)?(falta|ausente)|falta.*(dado|informac|arquivo|arte))/.test(q)){var mi=ev.missingInformation||[];return mi.length?('Tripulante, faltam para uma avaliação segura: '+mi.join('; ')+'. Assim que anexar, refaço a triagem.'):'Tripulante, não há informações pendentes registradas nesta avaliação.';}
+      if(/(fonte|com base|referenc|manual|base de|consult)/.test(q)){var s=ev.sourcesUsed||[];return s.length?('Tripulante, esta avaliação considerou: '+s.join('; ')+'.'):'Tripulante, não há fontes específicas registradas nesta avaliação.';}
+      if(/(score|nota|pontua|aderencia|percentual|quantos pontos|quanto (tirei|foi))/.test(q))
+        return 'Tripulante, o score geral de “'+ev.projectName+'” é '+(ev.overallScore==null?'—':ev.overallScore+'%')+' (média das seis dimensões). Notas: '+Object.keys(LABEL).map(function(kk){return LABEL[kk]+' '+(dims[kk]&&dims[kk].score!=null?dims[kk].score+'%':'—');}).join(', ')+'.';
+      if(/(por que|porque|status|situac|resultado|aprovad|bloque|reprov|proximo passo|e agora|o que acontece|posso enviar|posso submeter)/.test(q))
+        return statusExplanation(ev);
+      if(/(voo|passagem|bagagem|check ?in|reembolso|assento|milhas|tudoazul|clima|salario|ferias|\brh\b)/.test(q))
+        return 'Tripulante, atuo apenas na triagem deste projeto (avaliação, critérios, riscos e ajustes). Para outros assuntos, procure o canal adequado. Posso ajudar com a avaliação de “'+ev.projectName+'”?';
+      return 'Tripulante, consigo ajudar apenas com a avaliação deste projeto — score e notas por dimensão, riscos, informações que faltam, fontes consultadas e os ajustes recomendados. Poderia reformular sua pergunta nesse contexto? Se preferir, começo pelo resumo de “'+ev.projectName+'”.';
+    }
+    window.ABOS_CHAT_TRANSPORT = function (opts) {
+      return new Promise(function (resolve) {
+        var ev = opts.projectEvaluation || {};
+        var last = (opts.messages[opts.messages.length - 1] || {}).content || '';
+        var reply = makeReply(ev, last);
+        setTimeout(function () { resolve({ reply: reply }); }, 650); // simula latência
+      });
+    };
+
+    // Botões de cenário
+    var labels = { aprovado:'✅ 100% Aprovado', ajustes:'🟡 Ajustes (84%)', bloqueado:'🔴 Bloqueado (65%)', critico:'⛔ Risco crítico', aguardando:'⏳ Aguardando dados' };
+    var box = document.getElementById('scenarioBtns');
+    Object.keys(SCENARIOS).forEach(function (key) {
+      var b = document.createElement('button');
+      b.textContent = labels[key];
+      b.onclick = function () { loadScenario(key); };
+      b.dataset.key = key;
+      box.appendChild(b);
+    });
+
+    function loadScenario(key) {
+      current = key;
+      var ev = SCENARIOS[key];
+      if (window.AbosChatbot) {
+        window.AbosChatbot.setEvaluation(ev);
+        window.AbosChatbot.reset();
+        window.AbosChatbot.open();
+      }
+      document.querySelectorAll('#scenarioBtns button').forEach(function (b) {
+        b.classList.toggle('active', b.dataset.key === key);
+      });
+      document.getElementById('cur').innerHTML = 'Cenário atual: <b>' + ev.projectName + '</b> — score ' +
+        (ev.overallScore === null ? '—' : ev.overallScore + '%') + ' · status <b>' + ev.status + '</b>';
+    }
+
+    // Inicializa após o chatbot montar.
+    window.addEventListener('load', function () { setTimeout(function () { loadScenario(current); }, 200); });
+  })();
+  </script>
+
+  <script src="chatbot.js" defer></script>
+</body>
+</html>

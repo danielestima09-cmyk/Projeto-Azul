@@ -1,0 +1,12 @@
+# Segredos e variáveis de ambiente — NUNCA versionar chaves
+.env
+.env.local
+.env.*.local
+**/.env
+**/.env.local
+**/.env.*.local
+
+# Dependências / temporários
+node_modules/
+*.log
+.DS_Store

@@ -165,6 +165,44 @@
   .pick-card b{font-size:13px}.pick-card span{font-size:11px;color:var(--mut);display:block;margin-top:2px}
   .logout-btn{background:rgba(255,255,255,.14);color:#fff;width:34px;height:34px;border-radius:50%;font-size:16px;display:grid;place-items:center}
   .logout-btn:hover{background:rgba(255,255,255,.28)}
+
+  /* ===== Chatbot ABOS (cópia embutida de /chatbot para o protótipo offline) ===== */
+  .abos-chatbot,.abos-chatbot *{box-sizing:border-box}
+  .abos-chatbot{--abos-deep:#002A8F;--abos-blue:#0060B7;--abos-sky:#00A3E0;--abos-ora:#F58220;--abos-ink:#16233D;--abos-mut:#5B6B84;--abos-line:#E2E8F2;--abos-bg:#F4F7FC;--abos-user:#0060B7;font-family:"Segoe UI",Roboto,-apple-system,Arial,sans-serif;font-size:14px;line-height:1.45;color:var(--abos-ink)}
+  .abos-fab{position:fixed;right:22px;bottom:22px;z-index:2147483000;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--abos-deep),var(--abos-blue));color:#fff;font-size:26px;display:grid;place-items:center;cursor:pointer;border:none;box-shadow:0 8px 26px rgba(0,42,143,.35);transition:transform .15s ease}
+  .abos-fab:hover{transform:translateY(-2px) scale(1.03)}
+  .abos-fab:focus-visible{outline:3px solid var(--abos-sky);outline-offset:3px}
+  .abos-window{position:fixed;right:22px;bottom:92px;z-index:2147483000;width:380px;max-width:calc(100vw - 32px);height:560px;max-height:calc(100vh - 120px);background:#fff;border:1px solid var(--abos-line);border-radius:16px;box-shadow:0 24px 70px rgba(0,42,143,.28);display:flex;flex-direction:column;overflow:hidden;transform-origin:bottom right;transition:opacity .18s ease,transform .18s ease}
+  .abos-chatbot[data-open="false"] .abos-window{opacity:0;transform:translateY(12px) scale(.96);pointer-events:none;visibility:hidden}
+  .abos-chatbot[data-open="true"] .abos-window{opacity:1;transform:none;visibility:visible}
+  .abos-chatbot[data-minimized="true"] .abos-window{height:56px;max-height:56px}
+  .abos-chatbot[data-minimized="true"] .abos-body,.abos-chatbot[data-minimized="true"] .abos-composer,.abos-chatbot[data-minimized="true"] .abos-disclaimer{display:none}
+  .abos-header{background:linear-gradient(100deg,var(--abos-deep),var(--abos-blue));color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+  .abos-avatar{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.16);display:grid;place-items:center;font-size:18px;flex-shrink:0}
+  .abos-title{flex:1;min-width:0}.abos-title strong{display:block;font-size:14px;font-weight:700}.abos-title span{display:block;font-size:11px;opacity:.85}
+  .abos-header-btn{background:rgba(255,255,255,.14);color:#fff;border:none;width:30px;height:30px;border-radius:8px;font-size:16px;cursor:pointer;display:grid;place-items:center}
+  .abos-header-btn:hover{background:rgba(255,255,255,.28)}
+  .abos-header-btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
+  .abos-body{flex:1;overflow-y:auto;padding:16px 14px;background:var(--abos-bg);display:flex;flex-direction:column;gap:10px}
+  .abos-msg{max-width:85%;padding:10px 13px;border-radius:14px;font-size:13.5px;white-space:pre-wrap;word-wrap:break-word;animation:abos-in .18s ease}
+  @keyframes abos-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .abos-msg-bot{align-self:flex-start;background:#fff;border:1px solid var(--abos-line);border-bottom-left-radius:4px}
+  .abos-msg-user{align-self:flex-end;background:var(--abos-user);color:#fff;border-bottom-right-radius:4px}
+  .abos-msg-error{align-self:center;background:#FCE4E6;color:#C0263A;border:1px solid #F3C6CE;font-size:12.5px;max-width:95%}
+  .abos-typing{align-self:flex-start;background:#fff;border:1px solid var(--abos-line);border-radius:14px;border-bottom-left-radius:4px;padding:12px 14px;display:inline-flex;gap:4px}
+  .abos-typing i{width:7px;height:7px;border-radius:50%;background:var(--abos-mut);display:inline-block;animation:abos-blink 1.2s infinite ease-in-out}
+  .abos-typing i:nth-child(2){animation-delay:.2s}.abos-typing i:nth-child(3){animation-delay:.4s}
+  @keyframes abos-blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+  .abos-composer{border-top:1px solid var(--abos-line);padding:10px;display:flex;gap:8px;align-items:flex-end;background:#fff;flex-shrink:0}
+  .abos-input{flex:1;resize:none;border:1px solid var(--abos-line);border-radius:10px;padding:10px 12px;font-family:inherit;font-size:13.5px;max-height:120px;outline:none;color:var(--abos-ink)}
+  .abos-input:focus{border-color:var(--abos-blue)}
+  .abos-send{background:var(--abos-blue);color:#fff;border:none;width:42px;height:42px;border-radius:10px;font-size:18px;cursor:pointer;display:grid;place-items:center;flex-shrink:0}
+  .abos-send:hover{background:var(--abos-deep)}.abos-send:disabled{opacity:.5;cursor:not-allowed}
+  .abos-send:focus-visible{outline:2px solid var(--abos-sky);outline-offset:2px}
+  .abos-disclaimer{font-size:10.5px;color:var(--abos-mut);text-align:center;padding:0 12px 8px;background:#fff}
+  @media(max-width:480px){.abos-window{right:0;bottom:0;width:100vw;max-width:100vw;height:100vh;max-height:100vh;border-radius:0}.abos-fab{right:16px;bottom:16px}}
+  @media(prefers-reduced-motion:reduce){.abos-msg,.abos-window,.abos-fab{animation:none;transition:none}}
+  .abos-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 </style>
 </head>
 <body>
@@ -194,6 +232,121 @@
 <div id="authHost" style="display:none"></div>
 <div id="modalHost"></div>
 <div class="toast" id="toast"></div>
+
+<!-- ===== Chatbot ABOS (integração de demonstração; começa oculto) ===== -->
+<div id="abos-chatbot-root" style="display:none" data-endpoint="/api/chat"></div>
+<script>
+/* Transporte SIMULADO para o protótipo offline (sem backend).
+   Responde de forma COERENTE com a pergunta E com os DADOS da avaliação.
+   Em produção, o chatbot.js chama /api/chat (Gemini via OpenRouter) sem alterações. */
+(function(){
+  var REFUSAL='Tripulante, não consigo alterar scores, status ou critérios por meio da conversa. Posso explicar a avaliação atual e indicar quais ajustes podem ser realizados antes de uma nova submissão.';
+  var LABEL={branding:'Branding',communication:'Comunicação',visual:'Visual',compliance:'Compliance',strategicMarketing:'Marketing Estratégico',organizationalIntelligence:'Inteligência Organizacional'};
+  var DIM={branding:['branding','marca','proposito','valores'],communication:['comunica','tom de voz','tom ','mensagem','clareza','linguagem'],visual:['visual','logo','logotipo','cor ','cores','tipografia','template','layout','identidade visual','legibilidade','hierarquia'],compliance:['compliance','lgpd','juridic','legal','regulat','direito','uso de imagem','confidencial','autoral'],strategicMarketing:['estrateg','campanha','conflito','redundan'],organizationalIntelligence:['organizacional','historic','duplicidade','sinergia','projetos existentes','iniciativa','aprendizad']};
+  function norm(s){return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');}
+  function statusExplanation(ev){
+    var comp=ev.dimensions&&ev.dimensions.compliance;
+    if(ev.riskLevel==='critical'){var rc=(ev.risks&&ev.risks[0]&&ev.risks[0].description)||'risco crítico';return 'Tripulante, “'+ev.projectName+'” foi bloqueado preventivamente por risco crítico: '+rc+'. É necessária revisão especializada (Jurídico/Compliance e Privacidade) antes de qualquer encaminhamento. Esta triagem não representa decisão jurídica definitiva.';}
+    if(ev.status==='approved')return 'Tripulante, “'+ev.projectName+'” alcançou 100% de aderência e está apto para encaminhamento ao marketing. A decisão final de publicação segue sujeita às validações humanas aplicáveis.';
+    if(ev.status==='awaiting'){var f=(ev.missingInformation||[]).join('; ')||'informações essenciais';return 'Tripulante, ainda não há nota definitiva: faltam dados para uma avaliação segura ('+f+').';}
+    if(ev.status==='blocked')return 'Tripulante, “'+ev.projectName+'” está com score '+ev.overallScore+'% e apresenta desalinhamentos significativos — o ponto mais crítico é Compliance ('+(comp&&comp.score)+'%): '+((comp&&comp.findings&&comp.findings[0])||'inconsistência identificada')+'. Recomendo revisão ampla antes de reenviar.';
+    return 'Tripulante, “'+ev.projectName+'” está com score '+ev.overallScore+'% (ajustes necessários). Bom nível de alinhamento, mas há pontos a revisar antes de encaminhar ao marketing. Quer que eu liste os ajustes?';
+  }
+  function reply(ev,text){
+    var q=norm(text);var dims=ev.dimensions||{};
+    function has(list){return list.some(function(k){return q.indexOf(norm(k))>=0;});}
+    function dimReply(key){var d=dims[key]||{};var sc=(d.score==null?'não avaliada (material insuficiente)':d.score+'%');var f=(d.findings&&d.findings.length)?(' Apontamentos: '+d.findings.join('; ')+'.'):' Sem apontamentos registrados nessa dimensão.';var ex=key==='compliance'?' Esta é uma triagem inicial e não substitui a validação do Jurídico/Compliance.':'';return 'Tripulante, na dimensão '+LABEL[key]+' o projeto está em '+sc+'.'+f+ex;}
+    if(!q)return statusExplanation(ev);
+    var mudar=/(muda|mude|altera|altere|aumenta|aumente|sobe|coloca|coloque|poe|põe).*(nota|score|status|pontua)/.test(q)||/nota\s*(100|maxima|10)\b/.test(q)||/(ignore|ignora|desconsidera)\s*(as|os)?\s*(regras|criterios|instru)/.test(q)||/(aprova|aprove|libera|libere|desbloqueia|valida|passa)\b.*(projeto|isso|pra mim|para mim|agora|logo)/.test(q);
+    if(mudar&&ev.status!=='approved')return REFUSAL;
+    if(/^(oi|ola|opa|e ai|bom dia|boa tarde|boa noite)\b/.test(q)||/(o que voce faz|como voce funciona|pode ajudar|no que pode|com o que|^ajuda\b)/.test(q))
+      return 'Tripulante, posso explicar a avaliação de “'+ev.projectName+'”: score geral, notas por dimensão, riscos, informações que faltam e os ajustes recomendados. Sobre o que quer saber?';
+    for(var k in DIM){if(has(DIM[k]))return dimReply(k);}
+    if(/(recomenda|ajust|melhor|o que falta|falta para|chegar a 100|aproximar|corrig|revisar|o que devo|o que muda)/.test(q)){
+      var recs=ev.recommendations||[];
+      if(!recs.length)return ev.status==='approved'?'Tripulante, não há ajustes pendentes: o projeto atingiu 100% de aderência.':'Tripulante, não há recomendações específicas registradas. Posso detalhar alguma dimensão para você revisar.';
+      return 'Tripulante, para aproximar “'+ev.projectName+'” de 100%, recomendo: '+recs.map(function(r,i){return (i+1)+') '+r;}).join('  ')+'.';
+    }
+    if(/risco|perig|reputac/.test(q)){var rk=ev.risks||[];return rk.length?('Tripulante, risco(s) identificado(s): '+rk.map(function(r){return (r.severity?('['+r.severity+'] '):'')+(r.description||'');}).join(' | ')+'.'):'Tripulante, não há riscos críticos registrados. Os pontos de atenção aparecem como apontamentos nas dimensões.';}
+    if(/(document|anexo|arquivo|o que preciso enviar|informac(oes|ao)\s*(que\s*)?(falta|ausente)|falta.*(dado|informac|arquivo|arte))/.test(q)){var mi=ev.missingInformation||[];return mi.length?('Tripulante, faltam para uma avaliação segura: '+mi.join('; ')+'. Assim que anexar, refaço a triagem.'):'Tripulante, não há informações pendentes registradas nesta avaliação.';}
+    if(/(fonte|com base|referenc|manual|base de|consult)/.test(q)){var s=ev.sourcesUsed||[];return s.length?('Tripulante, esta avaliação considerou: '+s.join('; ')+'.'):'Tripulante, não há fontes específicas registradas nesta avaliação.';}
+    if(/(score|nota|pontua|aderencia|percentual|quantos pontos|quanto (tirei|foi))/.test(q))
+      return 'Tripulante, o score geral de “'+ev.projectName+'” é '+(ev.overallScore==null?'—':ev.overallScore+'%')+' (média das seis dimensões). Notas: '+Object.keys(LABEL).map(function(kk){return LABEL[kk]+' '+(dims[kk]&&dims[kk].score!=null?dims[kk].score+'%':'—');}).join(', ')+'.';
+    if(/(por que|porque|status|situac|resultado|aprovad|bloque|reprov|proximo passo|e agora|o que acontece|posso enviar|posso submeter)/.test(q))
+      return statusExplanation(ev);
+    if(/(voo|passagem|bagagem|check ?in|reembolso|assento|milhas|tudoazul|clima|salario|ferias|\brh\b)/.test(q))
+      return 'Tripulante, atuo apenas na triagem deste projeto (avaliação, critérios, riscos e ajustes). Para outros assuntos, procure o canal adequado. Posso ajudar com a avaliação de “'+ev.projectName+'”?';
+    return 'Tripulante, consigo ajudar apenas com a avaliação deste projeto — score e notas por dimensão, riscos, informações que faltam, fontes consultadas e os ajustes recomendados. Poderia reformular sua pergunta nesse contexto? Se preferir, começo pelo resumo de “'+ev.projectName+'”.';
+  }
+  function simulate(opts){var ev=opts.projectEvaluation||{};var last=(opts.messages[opts.messages.length-1]||{}).content||'';return new Promise(function(res){setTimeout(function(){res({reply:reply(ev,last)});},450);});}
+  window.ABOS_CHAT_TRANSPORT=function(opts){
+    /* 1) Tenta o backend REAL (Gemini via /api/chat) — respostas de fato coerentes.
+       2) Se não houver backend (arquivo aberto direto ou servidor estático), simula offline. */
+    return fetch(opts.endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:opts.messages,projectEvaluation:opts.projectEvaluation})})
+      .then(function(res){if(!res.ok)return null;return res.json();})
+      .then(function(d){return (d&&d.reply)?{reply:d.reply}:simulate(opts);})
+      .catch(function(){return simulate(opts);});
+  };
+})();
+</script>
+<script>
+/* Cópia embutida de chatbot.js (widget isolado .abos-*). Fonte modular: /chatbot/chatbot.js */
+(function(){'use strict';
+  var GREETING='Olá, tripulante! Posso ajudar a explicar a avaliação do seu projeto, os critérios analisados, os riscos encontrados e os ajustes necessários.';
+  var state={open:false,minimized:false,sending:false,evaluation:null,history:[]};
+  var el={};var endpoint='/api/chat';
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+  function scrollToBottom(){if(el.body)el.body.scrollTop=el.body.scrollHeight;}
+  function build(){
+    var root=document.getElementById('abos-chatbot-root');
+    if(!root){root=document.createElement('div');root.id='abos-chatbot-root';document.body.appendChild(root);}
+    endpoint=root.getAttribute('data-endpoint')||window.ABOS_CHAT_ENDPOINT||'/api/chat';
+    root.className='abos-chatbot';root.setAttribute('data-open','false');root.setAttribute('data-minimized','false');
+    root.innerHTML='<button class="abos-fab" type="button" aria-label="Abrir o Assistente de Avaliação" aria-expanded="false" aria-controls="abos-window"><span aria-hidden="true">💬</span></button>'+
+      '<section class="abos-window" id="abos-window" role="dialog" aria-modal="false" aria-label="Assistente de Avaliação" hidden>'+
+      '<header class="abos-header"><div class="abos-avatar" aria-hidden="true">🛫</div><div class="abos-title"><strong>Assistente de Avaliação</strong><span>Triagem de projetos · Azul Brand OS</span></div>'+
+      '<button class="abos-header-btn abos-min" type="button" aria-label="Minimizar janela do chat"><span aria-hidden="true">—</span></button>'+
+      '<button class="abos-header-btn abos-close" type="button" aria-label="Fechar janela do chat"><span aria-hidden="true">✕</span></button></header>'+
+      '<div class="abos-body" role="log" aria-live="polite" aria-relevant="additions" aria-label="Histórico de mensagens"></div>'+
+      '<form class="abos-composer"><label class="abos-sr-only" for="abos-input">Escreva sua mensagem para o Assistente de Avaliação</label>'+
+      '<textarea class="abos-input" id="abos-input" rows="1" placeholder="Escreva sua mensagem, tripulante…" autocomplete="off"></textarea>'+
+      '<button class="abos-send" type="submit" aria-label="Enviar mensagem"><span aria-hidden="true">➤</span></button></form>'+
+      '<div class="abos-disclaimer">Triagem inicial por IA. A decisão final é das equipes humanas responsáveis.</div></section>';
+    el.root=root;el.fab=root.querySelector('.abos-fab');el.window=root.querySelector('.abos-window');el.body=root.querySelector('.abos-body');
+    el.form=root.querySelector('.abos-composer');el.input=root.querySelector('.abos-input');el.send=root.querySelector('.abos-send');
+    el.min=root.querySelector('.abos-min');el.close=root.querySelector('.abos-close');
+    bind();addMessage('bot',GREETING);state.history.push({role:'assistant',content:GREETING});
+  }
+  function bind(){
+    el.fab.addEventListener('click',toggle);el.close.addEventListener('click',close);el.min.addEventListener('click',minimize);
+    el.form.addEventListener('submit',onSubmit);
+    el.input.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();onSubmit(e);}});
+    el.input.addEventListener('input',function(){el.input.style.height='auto';el.input.style.height=Math.min(el.input.scrollHeight,120)+'px';});
+    el.window.addEventListener('keydown',function(e){if(e.key==='Escape'){close();el.fab.focus();}});
+  }
+  function addMessage(kind,text){var d=document.createElement('div');d.className='abos-msg '+(kind==='user'?'abos-msg-user':kind==='error'?'abos-msg-error':'abos-msg-bot');d.innerHTML=esc(text);el.body.appendChild(d);scrollToBottom();return d;}
+  function showTyping(){var t=document.createElement('div');t.className='abos-typing';t.setAttribute('aria-label','Assistente está digitando');t.innerHTML='<i></i><i></i><i></i>';el.body.appendChild(t);scrollToBottom();return t;}
+  function open(){state.open=true;state.minimized=false;el.root.setAttribute('data-open','true');el.root.setAttribute('data-minimized','false');el.window.hidden=false;el.fab.setAttribute('aria-expanded','true');el.fab.setAttribute('aria-label','Fechar o Assistente de Avaliação');setTimeout(function(){el.input&&el.input.focus();},60);scrollToBottom();}
+  function close(){state.open=false;el.root.setAttribute('data-open','false');el.window.hidden=true;el.fab.setAttribute('aria-expanded','false');el.fab.setAttribute('aria-label','Abrir o Assistente de Avaliação');}
+  function toggle(){state.open?close():open();}
+  function minimize(){state.minimized=!state.minimized;el.root.setAttribute('data-minimized',state.minimized?'true':'false');el.min.setAttribute('aria-label',state.minimized?'Restaurar janela do chat':'Minimizar janela do chat');if(!state.minimized){el.input.focus();scrollToBottom();}}
+  function onSubmit(e){if(e&&e.preventDefault)e.preventDefault();if(state.sending)return;var text=(el.input.value||'').trim();if(!text)return;addMessage('user',text);state.history.push({role:'user',content:text});el.input.value='';el.input.style.height='auto';send();}
+  function setSending(v){state.sending=v;el.send.disabled=v;el.input.disabled=v;}
+  function send(){setSending(true);var typing=showTyping();
+    var payload={messages:state.history.slice(-20),projectEvaluation:state.evaluation||null};
+    var transport=window.ABOS_CHAT_TRANSPORT||defaultTransport;
+    Promise.resolve(transport({messages:payload.messages,projectEvaluation:payload.projectEvaluation,endpoint:endpoint})).then(function(result){
+      typing.remove();var reply=result&&result.reply?result.reply:'Tripulante, não consegui gerar uma resposta agora. Pode tentar novamente?';
+      addMessage('bot',reply);state.history.push({role:'assistant',content:reply});
+    }).catch(function(err){typing.remove();var msg=(err&&err.userMessage)?err.userMessage:'Tripulante, tive um problema para concluir a avaliação agora. Verifique sua conexão e tente novamente.';addMessage('error',msg);}).then(function(){setSending(false);el.input.focus();});
+  }
+  function defaultTransport(opts){return fetch(opts.endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:opts.messages,projectEvaluation:opts.projectEvaluation})}).then(function(res){return res.json().catch(function(){return null;}).then(function(data){if(!res.ok){var e=new Error('HTTP '+res.status);e.userMessage=(data&&data.error)||'Tripulante, o serviço de avaliação está indisponível no momento.';throw e;}return data||{};});});}
+  window.AbosChatbot={open:open,close:close,toggle:toggle,minimize:minimize,
+    setEvaluation:function(ev){state.evaluation=ev||null;},
+    reset:function(){state.history=[];if(el.body)el.body.innerHTML='';addMessage('bot',GREETING);state.history.push({role:'assistant',content:GREETING});}};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build);else build();
+})();
+</script>
 
 <script>
 /* =========================================================
@@ -341,6 +494,7 @@ function render(){
   if(state.screen!=='app'){
     topbar.style.display='none';shell.style.display='none';auth.style.display='block';
     auth.innerHTML=state.screen==='login'?loginScreen():pickScreen();
+    var _cb=document.getElementById('abos-chatbot-root');if(_cb)_cb.style.display='none';if(window.AbosChatbot)window.AbosChatbot.close();
     return;
   }
   topbar.style.display='';shell.style.display='';auth.style.display='none';
@@ -356,6 +510,7 @@ function render(){
   else if(state.view==='reunioes')m.innerHTML=viewReunioes();
   else if(state.view==='notificacoes')m.innerHTML=viewNotificacoes();
   else if(state.view==='admin')m.innerHTML=viewAdmin();
+  updateChatbotVisibility();
 }
 function renderPersonaSelect(){
   const s=document.getElementById('personaSel');
@@ -654,6 +809,41 @@ function modalReuniao(pid){
     <div class="modal-foot"><button class="btn ghost" onclick="closeModal()">Cancelar</button><button class="btn ora" onclick="closeModal();toast('Reunião agendada · participantes notificados')">Agendar</button></div>
   </div></div>`;
 }
+/* ===== Integração do Chatbot ABOS (avaliações sintéticas por projeto) ===== */
+const EVALS={
+  p1:{projectName:'Campanha Nova Rota Campinas–Orlando',overallScore:84,status:'adjust',riskLevel:'medium',
+    dimensions:{branding:{score:90,findings:[]},communication:{score:75,findings:['Tom pouco alinhado ao apelo "férias em família" para o interior de SP']},visual:{score:82,findings:['Aplicar o mosaico da marca conforme o manual']},compliance:{score:88,findings:[]},strategicMarketing:{score:80,findings:['Alinhar identidade visual à campanha institucional vigente']},organizationalIntelligence:{score:89,findings:[]}},
+    recommendations:['Ajustar o tom da peça principal','Aplicar o mosaico da marca no KV','Alinhar com a campanha institucional vigente'],risks:[],missingInformation:[],sourcesUsed:['Manual de Marca Azul v4','Campanhas vigentes Q3/2026']},
+  p3:{projectName:'Reposicionamento Espaço Azul',overallScore:100,status:'approved',riskLevel:'low',
+    dimensions:{branding:{score:100,findings:[]},communication:{score:100,findings:[]},visual:{score:100,findings:[]},compliance:{score:100,findings:[]},strategicMarketing:{score:100,findings:[]},organizationalIntelligence:{score:100,findings:[]}},
+    recommendations:[],risks:[],missingInformation:[],sourcesUsed:['Manual de Marca Azul v4','Pesquisa de conforto 2026']},
+  p4:{projectName:'Divulgação Wi-Fi a Bordo',overallScore:88,status:'adjust',riskLevel:'medium',
+    dimensions:{branding:{score:92,findings:[]},communication:{score:80,findings:['Evitar promessa absoluta de cobertura']},visual:{score:90,findings:[]},compliance:{score:82,findings:['Qualificar afirmações sobre cobertura para não soar enganoso']},strategicMarketing:{score:90,findings:[]},organizationalIntelligence:{score:94,findings:[]}},
+    recommendations:['Qualificar a promessa de cobertura do Wi-Fi','Incluir disclaimer de disponibilidade por aeronave'],risks:[],missingInformation:[],sourcesUsed:['Manual de Marca Azul v4','Política de Comunicação Publicitária']},
+  p5:{projectName:'Institucional 15 Anos Azul',overallScore:100,status:'approved',riskLevel:'low',
+    dimensions:{branding:{score:100,findings:[]},communication:{score:100,findings:[]},visual:{score:100,findings:[]},compliance:{score:100,findings:[]},strategicMarketing:{score:100,findings:[]},organizationalIntelligence:{score:100,findings:[]}},
+    recommendations:[],risks:[],missingInformation:[],sourcesUsed:['Manual de Marca Azul v4','Histórico de campanhas institucionais']},
+};
+function updateChatbotVisibility(){
+  var root=document.getElementById('abos-chatbot-root');
+  if(!root)return;
+  var show=false,ev=null;
+  // Disponível apenas para o Funcionário de Vertente: a triagem por IA é ferramenta
+  // da vertente para ajustar a proposta antes de ela chegar (pronta) ao Marketing.
+  if(state.screen==='app'&&state.view==='detalhe'&&state.proj&&userById(state.persona).cargo==='Funcionário de Vertente'){
+    var x=PROJETOS.find(p=>p.id===state.proj);
+    if(x&&['analise','aprovado','divulgacao','concluido'].includes(x.status)){show=true;ev=EVALS[x.id]||null;}
+  }
+  if(show&&window.AbosChatbot){
+    if(window._abosProj!==state.proj){window.AbosChatbot.setEvaluation(ev);window.AbosChatbot.reset();window._abosProj=state.proj;}
+    root.style.display='';
+  }else{
+    root.style.display='none';
+    if(window.AbosChatbot)window.AbosChatbot.close();
+    window._abosProj=null;
+  }
+}
+
 /* ===== AUTENTICAÇÃO (login / escolha de papel) ===== */
 const AUTH_MOSAIC=`<span class="mosaic" style="margin-left:6px"><i style="background:#00A3E0"></i><i style="background:#FFC72C"></i><i style="background:#43B02A"></i><i style="background:#6D2077"></i><i style="background:#F58220"></i><i style="background:#0060B7"></i></span>`;
 function loginScreen(){
@@ -691,6 +881,9 @@ function modalForgot(){
   </div></div>`;
 }
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('show'),2600)}
+
+window.updateChatbotVisibility=updateChatbotVisibility;
+document.addEventListener('DOMContentLoaded',function(){updateChatbotVisibility();});
 
 render();
 </script>
