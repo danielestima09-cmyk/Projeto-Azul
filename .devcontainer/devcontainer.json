@@ -1,0 +1,20 @@
+{
+  "name": "Azul Brand Operating System",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "ABOS — protótipo + chatbot",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "postCreateCommand": "npm install",
+  "customizations": {
+    "vscode": {
+      "extensions": ["dbaeumer.vscode-eslint"]
+    }
+  },
+  "remoteEnv": {
+    "OPENROUTER_MODEL": "${localEnv:OPENROUTER_MODEL:google/gemini-3-flash-preview}"
+  }
+}

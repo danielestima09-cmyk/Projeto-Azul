@@ -10,3 +10,6 @@
 node_modules/
 *.log
 .DS_Store
+
+# Credenciais locais do Claude Code
+.claude/
