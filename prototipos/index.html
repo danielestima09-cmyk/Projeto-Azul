@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projeto Azul — Protótipos</title>
+<style>
+  :root{--azul-deep:#002A8F;--azul:#0060B7;--azul-sky:#00A3E0;--ora:#F58220;--ink:#16233D;--mut:#5B6B84;--line:#E2E8F2;--bg:#F4F7FC}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Segoe UI",Roboto,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+  .hero{background:linear-gradient(120deg,var(--azul-deep),var(--azul));color:#fff;padding:48px 24px 60px;text-align:center}
+  .wordmark{font-weight:800;font-size:34px;letter-spacing:.5px;display:inline-flex;align-items:center;gap:2px}
+  .wordmark .l1{color:#BFE3FF}.wordmark .l2{color:#7FC4F0}.wordmark .l4{color:#DCEEFF}
+  .mosaic{display:grid;grid-template-columns:repeat(3,9px);grid-gap:3px;margin-left:8px}
+  .mosaic i{width:9px;height:9px;border-radius:1px}
+  .hero p{opacity:.9;margin-top:10px;font-size:15px}
+  .wrap{max-width:920px;margin:-34px auto 40px;padding:0 24px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:760px){.wrap{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:0 8px 30px rgba(0,42,143,.1);display:flex;flex-direction:column}
+  .tag{align-self:flex-start;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:14px}
+  .tag.a{background:#E1F0FF;color:var(--azul)}
+  .tag.b{background:#FDF3E7;color:var(--ora)}
+  .card h2{font-size:20px;margin-bottom:8px}
+  .card p{color:var(--mut);font-size:14px;line-height:1.5;margin-bottom:16px}
+  .card ul{list-style:none;margin-bottom:20px;flex:1}
+  .card li{font-size:13px;padding:6px 0;padding-left:24px;position:relative;color:var(--ink)}
+  .card li::before{content:"✓";position:absolute;left:0;color:var(--azul);font-weight:800}
+  .card.b li::before{color:var(--ora)}
+  .btn{background:var(--azul);color:#fff;text-decoration:none;text-align:center;padding:13px;border-radius:10px;font-weight:700;font-size:14px;display:block}
+  .btn:hover{background:var(--azul-deep)}
+  .btn.b{background:var(--ora)}.btn.b:hover{background:#d96e0f}
+  .note{max-width:920px;margin:0 auto 50px;padding:0 24px;color:var(--mut);font-size:13px;text-align:center}
+  .note b{color:var(--ink)}
+</style>
+</head>
+<body>
+  <div class="hero">
+    <div class="wordmark">Azul<span class="mosaic"><i style="background:#00A3E0"></i><i style="background:#FFC72C"></i><i style="background:#43B02A"></i><i style="background:#6D2077"></i><i style="background:#F58220"></i><i style="background:#0060B7"></i></span></div>
+    <p>Projeto Azul · Protótipos navegáveis para demonstração</p>
+  </div>
+  <div class="wrap">
+    <div class="card a">
+      <span class="tag a">Versão A</span>
+      <h2>Protótipo Base</h2>
+      <p>Somente o que já estava definido: os 5 módulos essenciais do sistema.</p>
+      <ul>
+        <li>Gestão de projetos (ciclo de vida completo)</li>
+        <li>Comentários estruturados (interno/público)</li>
+        <li>Aprovações e reuniões internas</li>
+        <li>Dashboard com gráficos e exportação</li>
+        <li>Notificações in-app</li>
+        <li>Administração (usuários e vertentes)</li>
+      </ul>
+      <a class="btn" href="base.html">Abrir protótipo Base →</a>
+    </div>
+    <div class="card b">
+      <span class="tag b">Versão B</span>
+      <h2>Protótipo Enriquecido</h2>
+      <p>Tudo da versão base + as sugestões da pesquisa de mercado (E1–E10).</p>
+      <ul>
+        <li>Formulário inteligente por tipo de projeto (E1)</li>
+        <li>Revisão sobre a arte / proofing (E2)</li>
+        <li>Alinhamento inicial com o Marketing (E3)</li>
+        <li>Prazos & SLA com alertas de atraso (E4)</li>
+        <li>Indicadores de retrabalho no dashboard (E5)</li>
+        <li>Resultado × esperado, marca e IA (E6–E10)</li>
+      </ul>
+      <a class="btn b" href="enriquecido.html">Abrir protótipo Enriquecido →</a>
+    </div>
+  </div>
+  <div class="note">
+    💡 <b>Dica de demonstração:</b> em ambos os protótipos, use o seletor de <b>persona</b> no topo direito para navegar como Funcionário de Vertente, Diretor, Marketing, Coordenador, Presidente ou Administrador — a interface, os projetos visíveis e as ações mudam conforme o papel. Todos os dados são sintéticos.
+  </div>
+</body>
+</html>

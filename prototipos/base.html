@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projeto Azul — Protótipo (Versão Base)</title>
+<style>
+  :root{
+    --azul-deep:#002A8F; --azul:#0060B7; --azul-sky:#00A3E0; --azul-soft:#E8F1FB;
+    --ora:#F58220; --yel:#FFC72C; --grn:#43B02A; --pur:#6D2077; --mag:#E4002B;
+    --ink:#16233D; --mut:#5B6B84; --line:#E2E8F2; --bg:#F4F7FC; --card:#FFFFFF;
+    --ok:#1F9D55; --warn:#E7A600; --shadow:0 4px 18px rgba(0,42,143,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Segoe UI",Roboto,-apple-system,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.45}
+  button{font-family:inherit;cursor:pointer;border:none;background:none}
+  a{color:inherit}
+  .hidden{display:none!important}
+
+  /* ---------- Top bar ---------- */
+  .topbar{height:60px;background:linear-gradient(100deg,var(--azul-deep),var(--azul));display:flex;align-items:center;justify-content:space-between;padding:0 20px;color:#fff;position:sticky;top:0;z-index:50;box-shadow:0 2px 12px rgba(0,42,143,.25)}
+  .brand{display:flex;align-items:center;gap:12px}
+  .wordmark{font-weight:800;font-size:22px;letter-spacing:.5px;display:flex;align-items:center;gap:2px}
+  .wordmark .l1{color:#BFE3FF}.wordmark .l2{color:#7FC4F0}.wordmark .l3{color:#fff}.wordmark .l4{color:#DCEEFF}
+  .mosaic{display:grid;grid-template-columns:repeat(3,6px);grid-gap:2px;margin-left:4px}
+  .mosaic i{width:6px;height:6px;border-radius:1px;display:block}
+  .app-name{font-size:12px;opacity:.85;border-left:1px solid rgba(255,255,255,.3);padding-left:12px;margin-left:4px}
+  .top-right{display:flex;align-items:center;gap:16px}
+  .persona-switch{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);padding:6px 10px;border-radius:30px}
+  .persona-switch select{background:transparent;border:none;color:#fff;font-weight:600;font-size:13px;outline:none}
+  .persona-switch select option{color:#16233D}
+  .bell{position:relative;font-size:18px}
+  .bell .dot{position:absolute;top:-4px;right:-6px;background:var(--ora);color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 5px}
+  .avatar{width:34px;height:34px;border-radius:50%;background:#fff;color:var(--azul-deep);display:grid;place-items:center;font-weight:700;font-size:13px}
+
+  /* ---------- Layout ---------- */
+  .shell{display:flex;min-height:calc(100vh - 60px)}
+  .sidebar{width:230px;background:var(--card);border-right:1px solid var(--line);padding:16px 12px;flex-shrink:0}
+  .nav-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;color:var(--mut);font-weight:600;margin-bottom:4px;cursor:pointer;transition:.15s}
+  .nav-item:hover{background:var(--azul-soft);color:var(--azul-deep)}
+  .nav-item.active{background:linear-gradient(100deg,var(--azul-deep),var(--azul));color:#fff}
+  .nav-item .ico{width:20px;text-align:center}
+  .nav-item .badge{margin-left:auto;background:var(--ora);color:#fff;font-size:11px;font-weight:700;border-radius:10px;padding:1px 7px}
+  .nav-item.active .badge{background:#fff;color:var(--ora)}
+  .side-label{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:#9AA8BE;padding:14px 14px 6px}
+  .main{flex:1;padding:26px 32px;max-width:1200px}
+
+  /* ---------- Common UI ---------- */
+  .page-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+  .page-head h1{font-size:22px;font-weight:800;color:var(--ink)}
+  .page-head p{color:var(--mut);font-size:13px;margin-top:2px}
+  .btn{background:var(--azul);color:#fff;padding:10px 18px;border-radius:9px;font-weight:700;font-size:13px;display:inline-flex;align-items:center;gap:8px;box-shadow:var(--shadow)}
+  .btn:hover{background:var(--azul-deep)}
+  .btn.ghost{background:#fff;color:var(--azul);border:1px solid var(--line);box-shadow:none}
+  .btn.ghost:hover{background:var(--azul-soft)}
+  .btn.ora{background:var(--ora)}.btn.ora:hover{background:#d96e0f}
+  .btn.grn{background:var(--grn)}.btn.grn:hover{background:#369022}
+  .btn.sm{padding:7px 12px;font-size:12px}
+  .btn.danger{background:#fff;color:var(--mag);border:1px solid #F3C6CE;box-shadow:none}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+  .grid{display:grid;gap:16px}
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+  .filters select,.filters input{padding:9px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;font-size:13px;color:var(--ink);outline:none}
+  .filters input{min-width:220px}
+
+  .badge-status{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap;display:inline-block}
+  .st-rascunho{background:#EEF1F6;color:#5B6B84}
+  .st-revisao{background:#FFF3DA;color:#B7791F}
+  .st-analise{background:#E1F0FF;color:#0060B7}
+  .st-aprovado{background:#E3F6E9;color:#1F9D55}
+  .st-divulgacao{background:#F1E7F7;color:#6D2077}
+  .st-concluido{background:#DCF3F1;color:#0B7A70}
+
+  .chip{font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px}
+  .p-alta{background:#FCE4E6;color:#C0263A}.p-media{background:#FFF1DA;color:#B7791F}.p-baixa{background:#E7F0FE;color:#3E6DB5}
+  .vis-int{background:#EDE4F5;color:#6D2077}.vis-pub{background:#E1F0FF;color:#0060B7}
+
+  /* project cards */
+  .proj-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+  .proj-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow);cursor:pointer;transition:.15s;border-left:5px solid var(--azul-sky)}
+  .proj-card:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,42,143,.14)}
+  .proj-card h3{font-size:15px;margin-bottom:6px}
+  .proj-meta{display:flex;align-items:center;gap:8px;color:var(--mut);font-size:12px;margin:8px 0}
+  .proj-foot{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+  .mini{font-size:12px;color:var(--mut);display:flex;align-items:center;gap:5px}
+  .tag-vert{font-size:11px;background:var(--azul-soft);color:var(--azul-deep);font-weight:700;padding:2px 9px;border-radius:20px}
+
+  /* detail */
+  .tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:18px 0}
+  .tab{padding:10px 16px;font-weight:700;color:var(--mut);border-bottom:3px solid transparent;cursor:pointer;font-size:13px}
+  .tab.active{color:var(--azul-deep);border-color:var(--azul)}
+  .kv{display:grid;grid-template-columns:180px 1fr;gap:10px 16px;margin:6px 0}
+  .kv dt{color:var(--mut);font-weight:600}.kv dd{color:var(--ink)}
+  .timeline{position:relative;padding-left:22px}
+  .timeline::before{content:"";position:absolute;left:6px;top:4px;bottom:4px;width:2px;background:var(--line)}
+  .tl-item{position:relative;padding:6px 0 16px}
+  .tl-item::before{content:"";position:absolute;left:-20px;top:8px;width:12px;height:12px;border-radius:50%;background:var(--azul);border:2px solid #fff;box-shadow:0 0 0 2px var(--azul-soft)}
+  .comment{border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px;background:#fff}
+  .comment.internal{background:#FBF8FE;border-color:#EADCF7}
+  .c-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+  .attach{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:10px;margin-bottom:10px;background:#fff}
+  .attach .ficon{width:40px;height:40px;border-radius:8px;display:grid;place-items:center;color:#fff;font-weight:700;font-size:12px}
+
+  /* dashboard */
+  .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:20px}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+  .stat .n{font-size:30px;font-weight:800;color:var(--azul-deep)}
+  .stat .t{color:var(--mut);font-size:12px;font-weight:600;margin-top:2px}
+  .stat .tr{font-size:12px;font-weight:700;margin-top:6px}
+  .charts{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:900px){.charts{grid-template-columns:1fr}}
+  .chart-title{font-weight:700;font-size:14px;margin-bottom:14px}
+  .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .bar-row .lbl{width:120px;font-size:12px;color:var(--mut);text-align:right}
+  .bar-track{flex:1;background:#EEF2F8;border-radius:8px;height:22px;overflow:hidden}
+  .bar-fill{height:100%;border-radius:8px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;color:#fff;font-size:11px;font-weight:700}
+  .funnel{display:flex;flex-direction:column;gap:8px;align-items:center}
+  .funnel .fseg{color:#fff;font-weight:700;font-size:13px;padding:10px;border-radius:8px;text-align:center}
+  .donut-wrap{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+  .legend{font-size:12px}.legend div{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .legend .sw{width:12px;height:12px;border-radius:3px}
+
+  /* meetings & notifications */
+  .list-row{display:flex;align-items:center;gap:14px;padding:14px;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:#fff}
+  .list-row .ic{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;color:#fff;flex-shrink:0}
+  .notif.unread{border-left:4px solid var(--ora)}
+  .dot-new{width:8px;height:8px;border-radius:50%;background:var(--ora);flex-shrink:0}
+
+  /* modal */
+  .modal-bg{position:fixed;inset:0;background:rgba(16,35,61,.5);display:grid;place-items:center;z-index:100;padding:20px}
+  .modal{background:#fff;border-radius:16px;width:100%;max-width:640px;max-height:88vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+  .modal-head{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff}
+  .modal-head h2{font-size:18px}
+  .modal-body{padding:22px}
+  .modal-foot{padding:16px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px;position:sticky;bottom:0;background:#fff}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-weight:700;font-size:12px;margin-bottom:6px;color:var(--ink)}
+  .field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;font-size:13px;font-family:inherit;outline:none}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--azul)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .x{font-size:22px;color:var(--mut);line-height:1}
+  .req{color:var(--mag)}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 22px;border-radius:30px;font-weight:600;font-size:13px;z-index:200;box-shadow:0 8px 30px rgba(0,0,0,.3);opacity:0;transition:.3s}
+  .toast.show{opacity:1;bottom:36px}
+  .empty{text-align:center;color:var(--mut);padding:50px 20px}
+  .empty .big{font-size:40px;margin-bottom:10px}
+  .banner{background:var(--azul-soft);border:1px solid #CBE1F7;border-radius:12px;padding:12px 16px;font-size:12px;color:var(--azul-deep);margin-bottom:18px;display:flex;gap:10px;align-items:center}
+  .info-pill{font-size:11px;background:#EEF1F6;color:var(--mut);padding:2px 9px;border-radius:20px;font-weight:600}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">
+    <div class="wordmark"><span class="l1">A</span><span class="l2">z</span><span class="l3">u</span><span class="l4">l</span>
+      <span class="mosaic"><i style="background:#00A3E0"></i><i style="background:#FFC72C"></i><i style="background:#43B02A"></i><i style="background:#6D2077"></i><i style="background:#F58220"></i><i style="background:#0060B7"></i></span>
+    </div>
+    <span class="app-name">Projeto Azul · Protótipo Base</span>
+  </div>
+  <div class="top-right">
+    <div class="persona-switch">
+      <span style="font-size:16px">👤</span>
+      <select id="personaSel" onchange="setPersona(this.value)"></select>
+    </div>
+    <div class="bell" title="Notificações" onclick="go('notificacoes')" style="cursor:pointer">🔔<span class="dot" id="bellCount">3</span></div>
+    <div class="avatar" id="avatar">--</div>
+  </div>
+</div>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main" id="main"></main>
+</div>
+
+<div id="modalHost"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   DADOS SINTÉTICOS — Projeto Azul (Versão Base)
+   ========================================================= */
+const VERTENTES = [
+  {id:'v1',nome:'Rotas & Malha Aérea'},
+  {id:'v2',nome:'Experiência do Cliente'},
+  {id:'v3',nome:'TudoAzul (Fidelidade)'},
+  {id:'v4',nome:'Produtos de Bordo'},
+  {id:'v5',nome:'Institucional'},
+];
+const USERS = [
+  {id:'u1',nome:'Marina Costa',cargo:'Funcionário de Vertente',vert:'v1',email:'marina.costa@voeazul.com.br'},
+  {id:'u2',nome:'Ricardo Alves',cargo:'Diretor de Vertente',vert:'v1',email:'ricardo.alves@voeazul.com.br'},
+  {id:'u3',nome:'Paula Menezes',cargo:'Membro do Marketing',vert:'mkt',email:'paula.menezes@voeazul.com.br'},
+  {id:'u4',nome:'Bruno Tavares',cargo:'Coordenador de Marketing',vert:'mkt',email:'bruno.tavares@voeazul.com.br'},
+  {id:'u5',nome:'Helena Furtado',cargo:'Presidente',vert:'-',email:'helena.furtado@voeazul.com.br'},
+  {id:'u6',nome:'Admin Sistema',cargo:'Administrador',vert:'-',email:'admin@voeazul.com.br'},
+];
+const STATUS = {
+  rascunho:{label:'Rascunho',cls:'st-rascunho',color:'#5B6B84'},
+  revisao:{label:'Em revisão',cls:'st-revisao',color:'#E7A600'},
+  analise:{label:'Em análise',cls:'st-analise',color:'#0060B7'},
+  aprovado:{label:'Aprovado',cls:'st-aprovado',color:'#1F9D55'},
+  divulgacao:{label:'Em divulgação',cls:'st-divulgacao',color:'#6D2077'},
+  concluido:{label:'Concluído',cls:'st-concluido',color:'#0B7A70'},
+};
+const PROJETOS = [
+  {id:'p1',nome:'Campanha Nova Rota Campinas–Orlando',vert:'v1',criador:'u1',status:'analise',
+   objetivo:'Divulgar a nova rota internacional VCP–MCO e estimular vendas antecipadas.',
+   publico:'Famílias classe A/B e viajantes a lazer do interior de SP',
+   metas:'Ocupação média de 82% nos 3 primeiros meses',orc:850000,
+   kpis:'Load factor, receita ancilar, awareness da rota',resultados:'20 mil passagens no pré-lançamento',
+   criadoEm:'02/06/2026'},
+  {id:'p2',nome:'Promoção TudoAzul Pontos em Dobro',vert:'v3',criador:'u1',status:'revisao',
+   objetivo:'Acelerar acúmulo de pontos e engajamento de membros TudoAzul no inverno.',
+   publico:'Membros TudoAzul ativos e inativos há 6+ meses',
+   metas:'+15% de membros ativos no trimestre',orc:420000,
+   kpis:'Membros ativos, pontos emitidos, resgates',resultados:'Reativação de 30 mil membros',
+   criadoEm:'20/06/2026'},
+  {id:'p3',nome:'Reposicionamento Espaço Azul',vert:'v4',criador:'u1',status:'aprovado',
+   objetivo:'Comunicar o novo padrão de conforto do Espaço Azul (mais espaço entre poltronas).',
+   publico:'Viajantes corporativos e frequentes',
+   metas:'Aumentar upsell de assentos em 25%',orc:610000,
+   kpis:'Taxa de upsell, NPS de conforto',resultados:'Upsell +25%, NPS +8 pts',
+   criadoEm:'10/05/2026'},
+  {id:'p4',nome:'Divulgação Wi-Fi a Bordo',vert:'v2',criador:'u1',status:'divulgacao',
+   objetivo:'Anunciar a expansão do Wi-Fi gratuito para toda a frota A320neo.',
+   publico:'Todos os clientes, com foco em conectados digitais',
+   metas:'90% de awareness entre clientes frequentes',orc:530000,
+   kpis:'Awareness, uso do Wi-Fi, menções sociais',resultados:'Awareness 88%',
+   criadoEm:'15/04/2026'},
+  {id:'p5',nome:'Institucional 15 Anos Azul',vert:'v5',criador:'u1',status:'concluido',
+   objetivo:'Celebrar os 15 anos da companhia reforçando o vínculo emocional com o Brasil.',
+   publico:'Público geral e colaboradores',
+   metas:'Alcance de 20 milhões e sentimento positivo >85%',orc:1200000,
+   kpis:'Alcance, sentimento, share of voice',resultados:'Alcance 24,3 mi · sentimento 89%',
+   criadoEm:'02/02/2026'},
+  {id:'p6',nome:'Black Friday Azul Viagens',vert:'v3',criador:'u1',status:'rascunho',
+   objetivo:'Preparar a campanha de Black Friday de pacotes da Azul Viagens.',
+   publico:'Caçadores de ofertas e viajantes a lazer',
+   metas:'R$ 40 mi em vendas na semana',orc:900000,
+   kpis:'GMV, ticket médio, conversão',resultados:'R$ 40 mi em GMV',
+   criadoEm:'08/07/2026'},
+];
+const COMENTARIOS = [
+  {id:'c1',proj:'p1',autor:'u3',topico:'Público-alvo',prio:'alta',vis:'publico',
+   texto:'O público do interior de SP responde melhor a apelo de "férias em família". Sugiro ajustar o tom da peça principal.',data:'05/06/2026',mencao:'u1'},
+  {id:'c2',proj:'p1',autor:'u3',topico:'Orçamento',prio:'media',vis:'interno',
+   texto:'Internamente: acho o budget de mídia OOH alto para o retorno esperado nessa praça. Revisar antes de levar ao Bruno.',data:'05/06/2026',mencao:null},
+  {id:'c3',proj:'p1',autor:'u4',topico:'Comunicação',prio:'alta',vis:'publico',
+   texto:'Precisamos alinhar a identidade visual com a campanha institucional vigente. Marcar reunião.',data:'06/06/2026',mencao:'u1'},
+  {id:'c4',proj:'p2',autor:'u2',topico:'Metas',prio:'media',vis:'publico',
+   texto:'Meta de reativação parece ambiciosa. Podemos escalonar por segmento?',data:'21/06/2026',mencao:'u1'},
+];
+const ANEXOS = [
+  {id:'a1',proj:'p1',nome:'Brief_Campinas_Orlando.pdf',tipo:'PDF',cor:'#E4002B',tam:'2,4 MB'},
+  {id:'a2',proj:'p1',nome:'Arte_KV_Principal.jpg',tipo:'IMG',cor:'#6D2077',tam:'5,1 MB'},
+  {id:'a3',proj:'p1',nome:'Plano_de_Midia.xlsx',tipo:'XLS',cor:'#43B02A',tam:'880 KB'},
+  {id:'a4',proj:'p3',nome:'Apresentacao_EspacoAzul.pptx',tipo:'PPT',cor:'#F58220',tam:'6,7 MB'},
+];
+const REUNIOES = [
+  {id:'r1',proj:'p1',titulo:'Alinhamento de identidade visual',data:'12/07/2026',hora:'14:00',pauta:'Ajustar KV à campanha institucional',parts:['u1','u3','u4']},
+  {id:'r2',proj:'p3',titulo:'Deliberação final — Espaço Azul',data:'09/07/2026',hora:'10:30',pauta:'Aprovação para divulgação',parts:['u1','u4','u5']},
+];
+const HISTORICO = {
+  p1:[{de:'—',para:'rascunho',autor:'u1',data:'02/06/2026',just:''},
+      {de:'rascunho',para:'revisao',autor:'u1',data:'03/06/2026',just:''},
+      {de:'revisao',para:'analise',autor:'u2',data:'04/06/2026',just:'Aprovado pela diretoria da vertente'}],
+  p3:[{de:'—',para:'rascunho',autor:'u1',data:'10/05/2026',just:''},
+      {de:'analise',para:'aprovado',autor:'u4',data:'28/06/2026',just:'Aprovado após reunião de deliberação'}],
+};
+const NOTIFS = [
+  {id:'n1',user:'u2',tipo:'Projeto submetido',msg:'Marina Costa submeteu "Promoção TudoAzul Pontos em Dobro" para sua revisão.',data:'Há 2 h',unread:true},
+  {id:'n2',user:'u3',tipo:'Diretor aprovou',msg:'"Campanha Campinas–Orlando" foi liberada para análise do Marketing.',data:'Há 1 dia',unread:true},
+  {id:'n3',user:'u1',tipo:'Novo comentário',msg:'Paula Menezes comentou em "Campanha Campinas–Orlando" e mencionou você.',data:'Há 1 dia',unread:true},
+  {id:'n4',user:'u1',tipo:'Reunião agendada',msg:'Reunião "Alinhamento de identidade visual" marcada para 12/07 às 14h.',data:'Há 3 dias',unread:false},
+];
+
+/* =========================================================
+   ESTADO / NAVEGAÇÃO
+   ========================================================= */
+const NAV = [
+  {id:'projetos',ico:'📁',label:'Meus Projetos'},
+  {id:'dashboard',ico:'📊',label:'Dashboard'},
+  {id:'reunioes',ico:'📅',label:'Reuniões'},
+  {id:'notificacoes',ico:'🔔',label:'Notificações'},
+];
+let state={persona:'u1',view:'projetos',proj:null,tab:'geral',fStatus:'',fVert:'',fBusca:''};
+
+const userById=id=>USERS.find(u=>u.id===id)||{nome:'—',cargo:''};
+const vertById=id=>(VERTENTES.find(v=>v.id===id)||{nome:'—'}).nome;
+const initials=n=>n.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+const money=v=>'R$ '+v.toLocaleString('pt-BR');
+
+function setPersona(id){state.persona=id;state.view='projetos';state.proj=null;render()}
+function go(view){state.view=view;state.proj=null;render();window.scrollTo(0,0)}
+function openProj(id){state.proj=id;state.view='detalhe';state.tab='geral';render();window.scrollTo(0,0)}
+function setTab(t){state.tab=t;render()}
+
+/* visibilidade de comentário conforme persona (RN-04) */
+function canSeeComment(c){
+  const p=userById(state.persona);
+  if(c.vis==='publico')return true;
+  // interno: só Marketing + Presidente
+  return ['Membro do Marketing','Coordenador de Marketing','Presidente'].includes(p.cargo);
+}
+/* projetos visíveis conforme persona */
+function visibleProjects(){
+  const p=userById(state.persona);
+  let list=[...PROJETOS];
+  if(p.cargo==='Funcionário de Vertente')list=list.filter(x=>x.vert===p.vert);
+  if(p.cargo==='Diretor de Vertente')list=list.filter(x=>x.vert===p.vert);
+  if(p.cargo==='Membro do Marketing')list=list.filter(x=>['analise','aprovado','divulgacao','concluido'].includes(x.status));
+  if(p.cargo==='Coordenador de Marketing')list=list.filter(x=>['analise','aprovado','divulgacao','concluido'].includes(x.status));
+  // Presidente e Admin veem todos
+  return list;
+}
+
+/* =========================================================
+   RENDER
+   ========================================================= */
+function render(){
+  renderPersonaSelect();
+  const p=userById(state.persona);
+  document.getElementById('avatar').textContent=initials(p.nome);
+  document.getElementById('bellCount').textContent=NOTIFS.filter(n=>n.user===state.persona&&n.unread).length||'';
+  renderSidebar();
+  const m=document.getElementById('main');
+  if(state.view==='projetos')m.innerHTML=viewProjetos();
+  else if(state.view==='detalhe')m.innerHTML=viewDetalhe();
+  else if(state.view==='dashboard')m.innerHTML=viewDashboard();
+  else if(state.view==='reunioes')m.innerHTML=viewReunioes();
+  else if(state.view==='notificacoes')m.innerHTML=viewNotificacoes();
+  else if(state.view==='admin')m.innerHTML=viewAdmin();
+}
+function renderPersonaSelect(){
+  const s=document.getElementById('personaSel');
+  s.innerHTML=USERS.map(u=>`<option value="${u.id}" ${u.id===state.persona?'selected':''}>${u.nome} — ${u.cargo}</option>`).join('');
+}
+function renderSidebar(){
+  const p=userById(state.persona);
+  let items=[...NAV];
+  if(p.cargo==='Administrador')items=[{id:'admin',ico:'⚙️',label:'Administração'},...NAV];
+  const pend=NOTIFS.filter(n=>n.user===state.persona&&n.unread).length;
+  document.getElementById('sidebar').innerHTML=
+    `<div class="side-label">Navegação</div>`+
+    items.map(n=>{
+      const badge=(n.id==='notificacoes'&&pend)?`<span class="badge">${pend}</span>`:'';
+      const active=(state.view===n.id||(state.view==='detalhe'&&n.id==='projetos'))?'active':'';
+      return `<div class="nav-item ${active}" onclick="go('${n.id}')"><span class="ico">${n.ico}</span>${n.label}${badge}</div>`;
+    }).join('')+
+    `<div class="side-label">Sessão</div>
+     <div style="padding:10px 14px;background:var(--azul-soft);border-radius:10px">
+       <div style="font-weight:700;font-size:13px">${p.nome}</div>
+       <div style="font-size:11px;color:var(--mut);margin-top:2px">${p.cargo}</div>
+       <div style="font-size:11px;color:var(--mut)">${p.vert!=='-' && p.vert!=='mkt'?vertById(p.vert):(p.vert==='mkt'?'Marketing':'—')}</div>
+     </div>`;
+}
+
+/* ---------- MEUS PROJETOS ---------- */
+function viewProjetos(){
+  const p=userById(state.persona);
+  let list=visibleProjects();
+  if(state.fStatus)list=list.filter(x=>x.status===state.fStatus);
+  if(state.fVert)list=list.filter(x=>x.vert===state.fVert);
+  if(state.fBusca)list=list.filter(x=>x.nome.toLowerCase().includes(state.fBusca.toLowerCase()));
+  const canCreate=p.cargo==='Funcionário de Vertente';
+  const heads={'Funcionário de Vertente':'Projetos que você criou','Diretor de Vertente':'Projetos da sua vertente','Membro do Marketing':'Projetos aguardando parecer','Coordenador de Marketing':'Pendências de aprovação','Presidente':'Todos os projetos','Administrador':'Todos os projetos'};
+  return `
+  <div class="page-head">
+    <div><h1>${heads[p.cargo]||'Projetos'}</h1><p>${list.length} projeto(s) · visão de ${p.cargo}</p></div>
+    ${canCreate?`<button class="btn" onclick="modalCriar()">＋ Criar projeto</button>`:''}
+  </div>
+  ${p.cargo==='Diretor de Vertente'?`<div class="banner">📌 Você tem <b>${PROJETOS.filter(x=>x.status==='revisao'&&x.vert===p.vert).length}</b> projeto(s) aguardando sua revisão.</div>`:''}
+  <div class="filters">
+    <input placeholder="🔎 Buscar projeto..." value="${state.fBusca}" oninput="state.fBusca=this.value;render()">
+    <select onchange="state.fStatus=this.value;render()"><option value="">Todos os status</option>${Object.entries(STATUS).map(([k,v])=>`<option value="${k}" ${state.fStatus===k?'selected':''}>${v.label}</option>`).join('')}</select>
+    <select onchange="state.fVert=this.value;render()"><option value="">Todas as vertentes</option>${VERTENTES.map(v=>`<option value="${v.id}" ${state.fVert===v.id?'selected':''}>${v.nome}</option>`).join('')}</select>
+  </div>
+  ${list.length?`<div class="proj-list">${list.map(projCard).join('')}</div>`:`<div class="empty"><div class="big">📭</div>Nenhum projeto encontrado para os filtros atuais.</div>`}`;
+}
+function projCard(x){
+  const st=STATUS[x.status];const nc=COMENTARIOS.filter(c=>c.proj===x.id).length;const na=ANEXOS.filter(a=>a.proj===x.id).length;
+  return `<div class="proj-card" style="border-left-color:${st.color}" onclick="openProj('${x.id}')">
+    <div style="display:flex;justify-content:space-between;align-items:start;gap:8px">
+      <h3>${x.nome}</h3><span class="badge-status ${st.cls}">${st.label}</span>
+    </div>
+    <div class="proj-meta"><span class="tag-vert">${vertById(x.vert)}</span></div>
+    <p style="color:var(--mut);font-size:12.5px">${x.objetivo}</p>
+    <div class="proj-foot">
+      <span class="mini">👤 ${userById(x.criador).nome.split(' ')[0]} · ${x.criadoEm}</span>
+      <span class="mini">💬 ${nc} · 📎 ${na}</span>
+    </div>
+  </div>`;
+}
+
+/* ---------- DETALHE ---------- */
+function viewDetalhe(){
+  const x=PROJETOS.find(p=>p.id===state.proj);const st=STATUS[x.status];const p=userById(state.persona);
+  const tabs=[['geral','Visão geral'],['comentarios','Comentários'],['anexos','Anexos'],['reunioes','Reuniões'],['historico','Histórico']];
+  return `
+  <div style="margin-bottom:10px"><button class="btn ghost sm" onclick="go('projetos')">← Voltar</button></div>
+  <div class="page-head">
+    <div><h1>${x.nome}</h1><p><span class="tag-vert">${vertById(x.vert)}</span> · Criado por ${userById(x.criador).nome} em ${x.criadoEm}</p></div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <span class="badge-status ${st.cls}" style="font-size:13px;padding:6px 14px">${st.label}</span>
+      ${actionsFor(x,p)}
+    </div>
+  </div>
+  <div class="tabs">${tabs.map(([id,l])=>`<div class="tab ${state.tab===id?'active':''}" onclick="setTab('${id}')">${l}</div>`).join('')}</div>
+  ${state.tab==='geral'?tabGeral(x):''}
+  ${state.tab==='comentarios'?tabComentarios(x):''}
+  ${state.tab==='anexos'?tabAnexos(x):''}
+  ${state.tab==='reunioes'?tabReunioes(x):''}
+  ${state.tab==='historico'?tabHistorico(x):''}`;
+}
+function actionsFor(x,p){
+  if(p.cargo==='Diretor de Vertente'&&x.status==='revisao'&&x.vert===p.vert)
+    return `<button class="btn grn sm" onclick="act('aprovou para análise')">✔ Aprovar p/ Marketing</button><button class="btn danger sm" onclick="act('devolveu para ajustes')">↩ Devolver</button>`;
+  if(p.cargo==='Coordenador de Marketing'&&x.status==='analise')
+    return `<button class="btn grn sm" onclick="act('aprovou o projeto')">✔ Aprovar</button><button class="btn danger sm" onclick="act('reprovou o projeto')">✖ Reprovar</button><button class="btn ora sm" onclick="modalReuniao('${x.id}')">📅 Agendar reunião</button>`;
+  if(p.cargo==='Funcionário de Vertente'&&x.status==='rascunho'&&x.criador===p.id)
+    return `<button class="btn sm" onclick="act('submeteu ao Diretor')">➤ Submeter ao Diretor</button>`;
+  return '';
+}
+function tabGeral(x){
+  return `<div class="card"><dl class="kv">
+    <dt>Objetivo</dt><dd>${x.objetivo}</dd>
+    <dt>Público-alvo</dt><dd>${x.publico}</dd>
+    <dt>Metas</dt><dd>${x.metas}</dd>
+    <dt>Orçamento planejado</dt><dd>${money(x.orc)}</dd>
+    <dt>KPIs</dt><dd>${x.kpis}</dd>
+    <dt>Resultados esperados</dt><dd>${x.resultados}</dd>
+    <dt>Vertical comandante</dt><dd>${vertById(x.vert)}</dd>
+  </dl></div>`;
+}
+function tabComentarios(x){
+  const cs=COMENTARIOS.filter(c=>c.proj===x.id&&canSeeComment(c));
+  const p=userById(state.persona);
+  const canComment=p.cargo!=='Presidente'&&p.cargo!=='Administrador';
+  return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div class="info-pill">Visibilidade aplicada para <b>${p.cargo}</b> — comentários internos ${canSeeComment({vis:'interno'})?'visíveis':'ocultos'}</div>
+      ${canComment?`<button class="btn sm" onclick="modalComentar('${x.id}')">＋ Novo comentário</button>`:''}
+    </div>
+    ${cs.length?cs.map(c=>`
+      <div class="comment ${c.vis==='interno'?'internal':''}">
+        <div class="c-head">
+          <div class="avatar" style="width:28px;height:28px;font-size:11px;background:var(--azul);color:#fff">${initials(userById(c.autor).nome)}</div>
+          <b>${userById(c.autor).nome}</b>
+          <span class="info-pill">${c.topico}</span>
+          <span class="chip p-${c.prio}">${c.prio.toUpperCase()}</span>
+          <span class="chip ${c.vis==='interno'?'vis-int':'vis-pub'}">${c.vis==='interno'?'🔒 Interno':'🌐 Público'}</span>
+          <span style="margin-left:auto;font-size:11px;color:var(--mut)">${c.data}</span>
+        </div>
+        <div>${c.texto}</div>
+        ${c.mencao?`<div style="margin-top:8px;font-size:12px;color:var(--azul)">@ mencionou ${userById(c.mencao).nome}</div>`:''}
+      </div>`).join(''):`<div class="empty"><div class="big">💬</div>Nenhum comentário visível para o seu perfil.</div>`}`;
+}
+function tabAnexos(x){
+  const as=ANEXOS.filter(a=>a.proj===x.id);
+  return `${as.length?as.map(a=>`<div class="attach">
+      <div class="ficon" style="background:${a.cor}">${a.tipo}</div>
+      <div style="flex:1"><div style="font-weight:700">${a.nome}</div><div style="font-size:12px;color:var(--mut)">${a.tam}</div></div>
+      <button class="btn ghost sm" onclick="toast('Download simulado: ${a.nome}')">⬇ Baixar</button>
+    </div>`).join(''):`<div class="empty"><div class="big">📎</div>Nenhum anexo neste projeto.</div>`}
+    <button class="btn ghost sm" style="margin-top:6px" onclick="toast('Upload simulado')">＋ Anexar arquivo</button>`;
+}
+function tabReunioes(x){
+  const rs=REUNIOES.filter(r=>r.proj===x.id);
+  return `${rs.length?rs.map(r=>`<div class="list-row">
+      <div class="ic" style="background:var(--pur)">📅</div>
+      <div style="flex:1"><b>${r.titulo}</b><div style="font-size:12px;color:var(--mut)">${r.data} às ${r.hora} · ${r.pauta}</div>
+      <div style="margin-top:6px">${r.parts.map(u=>`<span class="info-pill">${userById(u).nome.split(' ')[0]}</span> `).join('')}</div></div>
+    </div>`).join(''):`<div class="empty"><div class="big">📅</div>Nenhuma reunião agendada.</div>`}`;
+}
+function tabHistorico(x){
+  const h=HISTORICO[x.id]||[];
+  return `<div class="card"><div class="timeline">${h.length?h.map(e=>`
+    <div class="tl-item"><b>${e.para==='rascunho'&&e.de==='—'?'Projeto criado':(STATUS[e.de]?STATUS[e.de].label+' → ':'')+STATUS[e.para].label}</b>
+    <div style="font-size:12px;color:var(--mut)">${userById(e.autor).nome} · ${e.data}${e.just?' · '+e.just:''}</div></div>`).join(''):'<div class="empty">Sem histórico registrado.</div>'}</div></div>`;
+}
+
+/* ---------- DASHBOARD ---------- */
+function viewDashboard(){
+  const byStatus={};Object.keys(STATUS).forEach(k=>byStatus[k]=PROJETOS.filter(p=>p.status===k).length);
+  const orcTotal=PROJETOS.reduce((s,p)=>s+p.orc,0);
+  const funnel=[['rascunho','Rascunho'],['revisao','Em revisão'],['analise','Em análise'],['aprovado','Aprovado'],['divulgacao','Em divulgação'],['concluido','Concluído']];
+  const maxF=Math.max(...Object.values(byStatus),1);
+  const byVert=VERTENTES.map(v=>({nome:v.nome,n:PROJETOS.filter(p=>p.vert===v.id).length}));
+  const maxV=Math.max(...byVert.map(v=>v.n),1);
+  const mcolors=['#0060B7','#00A3E0','#43B02A','#FFC72C','#F58220','#6D2077'];
+  return `
+  <div class="page-head"><div><h1>Dashboard Executivo</h1><p>Visão consolidada de todos os projetos · reuniões de desempenho</p></div>
+    <button class="btn ghost" onclick="toast('Exportação simulada (PDF)')">⬇ Exportar PDF</button></div>
+  <div class="stat-row">
+    <div class="stat"><div class="n">${PROJETOS.length}</div><div class="t">Projetos ativos</div></div>
+    <div class="stat"><div class="n">${byStatus.analise}</div><div class="t">Em análise no Marketing</div></div>
+    <div class="stat"><div class="n">${byStatus.concluido}</div><div class="t">Concluídos</div></div>
+    <div class="stat"><div class="n" style="font-size:22px">${money(orcTotal)}</div><div class="t">Orçamento planejado total</div></div>
+  </div>
+  <div class="charts">
+    <div class="card"><div class="chart-title">Funil de projetos por status</div>
+      <div class="funnel">${funnel.map(([k,l],i)=>{const w=40+ (byStatus[k]/maxF)*55;return `<div class="fseg" style="width:${w}%;background:${STATUS[k].color}">${l}: ${byStatus[k]}</div>`}).join('')}</div>
+    </div>
+    <div class="card"><div class="chart-title">Projetos por vertente</div>
+      ${byVert.map((v,i)=>`<div class="bar-row"><div class="lbl">${v.nome}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.max(v.n/maxV*100,8)}%;background:${mcolors[i%mcolors.length]}">${v.n}</div></div></div>`).join('')}
+    </div>
+    <div class="card"><div class="chart-title">Orçamento planejado por projeto</div>
+      ${PROJETOS.map((p,i)=>`<div class="bar-row"><div class="lbl" style="width:150px">${p.nome.slice(0,20)}…</div><div class="bar-track"><div class="bar-fill" style="width:${p.orc/1200000*100}%;background:var(--azul)">${money(p.orc)}</div></div></div>`).join('')}
+    </div>
+    <div class="card"><div class="chart-title">Distribuição por status</div>
+      <div class="donut-wrap">
+        ${donut(byStatus)}
+        <div class="legend">${Object.entries(STATUS).map(([k,v])=>`<div><span class="sw" style="background:${v.color}"></span>${v.label} (${byStatus[k]})</div>`).join('')}</div>
+      </div>
+    </div>
+  </div>`;
+}
+function donut(byStatus){
+  const total=Object.values(byStatus).reduce((a,b)=>a+b,0)||1;let acc=0;const segs=[];
+  Object.entries(STATUS).forEach(([k,v])=>{const frac=byStatus[k]/total;if(frac>0){const a0=acc*360,a1=(acc+frac)*360;segs.push(`${v.color} ${a0}deg ${a1}deg`);acc+=frac}});
+  return `<div style="width:150px;height:150px;border-radius:50%;background:conic-gradient(${segs.join(',')})"><div style="width:80px;height:80px;background:#fff;border-radius:50%;position:relative;top:35px;left:35px;display:grid;place-items:center;font-weight:800;color:var(--azul-deep)">${total}</div></div>`;
+}
+
+/* ---------- REUNIÕES ---------- */
+function viewReunioes(){
+  return `<div class="page-head"><div><h1>Reuniões</h1><p>Agendamentos vinculados aos projetos</p></div></div>
+  ${REUNIOES.map(r=>`<div class="list-row">
+    <div class="ic" style="background:var(--pur)">📅</div>
+    <div style="flex:1"><b>${r.titulo}</b><div style="font-size:12px;color:var(--mut)">${PROJETOS.find(p=>p.id===r.proj).nome}</div>
+    <div style="font-size:12px;color:var(--mut);margin-top:2px">${r.pauta}</div>
+    <div style="margin-top:6px">${r.parts.map(u=>`<span class="info-pill">${userById(u).nome.split(' ')[0]}</span> `).join('')}</div></div>
+    <div style="text-align:right"><div style="font-weight:800;color:var(--azul-deep)">${r.data}</div><div style="font-size:12px;color:var(--mut)">${r.hora}</div></div>
+  </div>`).join('')}`;
+}
+
+/* ---------- NOTIFICAÇÕES ---------- */
+function viewNotificacoes(){
+  const ns=NOTIFS.filter(n=>n.user===state.persona);
+  return `<div class="page-head"><div><h1>Notificações</h1><p>${ns.filter(n=>n.unread).length} não lida(s)</p></div>
+    <button class="btn ghost sm" onclick="markAll()">✔ Marcar todas como lidas</button></div>
+  ${ns.length?ns.map(n=>`<div class="list-row notif ${n.unread?'unread':''}">
+    ${n.unread?'<div class="dot-new"></div>':'<div style="width:8px"></div>'}
+    <div class="ic" style="background:var(--azul)">🔔</div>
+    <div style="flex:1"><b>${n.tipo}</b><div style="font-size:13px;color:var(--mut)">${n.msg}</div></div>
+    <div style="font-size:12px;color:var(--mut)">${n.data}</div>
+  </div>`).join(''):`<div class="empty"><div class="big">🔔</div>Nenhuma notificação para ${userById(state.persona).nome}.</div>`}`;
+}
+function markAll(){NOTIFS.forEach(n=>{if(n.user===state.persona)n.unread=false});render();toast('Notificações marcadas como lidas')}
+
+/* ---------- ADMIN ---------- */
+function viewAdmin(){
+  return `<div class="page-head"><div><h1>Administração</h1><p>Cadastro de usuários, cargos e vertentes</p></div></div>
+  <div class="grid" style="grid-template-columns:1fr 1fr">
+    <div class="card"><div class="chart-title">Usuários (${USERS.length})</div>
+      ${USERS.map(u=>`<div class="list-row" style="margin-bottom:8px"><div class="avatar" style="background:var(--azul);color:#fff">${initials(u.nome)}</div>
+        <div style="flex:1"><b>${u.nome}</b><div style="font-size:12px;color:var(--mut)">${u.email}</div></div>
+        <span class="info-pill">${u.cargo}</span></div>`).join('')}
+      <button class="btn ghost sm" style="margin-top:6px" onclick="toast('Cadastro simulado')">＋ Novo usuário</button>
+    </div>
+    <div class="card"><div class="chart-title">Vertentes (${VERTENTES.length})</div>
+      ${VERTENTES.map(v=>`<div class="list-row" style="margin-bottom:8px"><div class="ic" style="background:var(--azul-sky)">🏢</div>
+        <div style="flex:1"><b>${v.nome}</b><div style="font-size:12px;color:var(--mut)">${PROJETOS.filter(p=>p.vert===v.id).length} projeto(s)</div></div></div>`).join('')}
+      <button class="btn ghost sm" style="margin-top:6px" onclick="toast('Cadastro simulado')">＋ Nova vertente</button>
+    </div>
+  </div>`;
+}
+
+/* =========================================================
+   MODAIS & AÇÕES
+   ========================================================= */
+function closeModal(){document.getElementById('modalHost').innerHTML=''}
+function act(msg){toast('Ação registrada: '+userById(state.persona).nome.split(' ')[0]+' '+msg);}
+function modalCriar(){
+  document.getElementById('modalHost').innerHTML=`
+  <div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal">
+    <div class="modal-head"><h2>Criar novo projeto</h2><button class="x" onclick="closeModal()">×</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Nome do projeto <span class="req">*</span></label><input placeholder="Ex.: Campanha Nova Rota..."></div>
+      <div class="field"><label>Objetivo <span class="req">*</span></label><textarea rows="2" placeholder="Qual o objetivo do projeto?"></textarea></div>
+      <div class="row2">
+        <div class="field"><label>Público-alvo <span class="req">*</span></label><input placeholder="Quem queremos atingir?"></div>
+        <div class="field"><label>Vertical comandante <span class="req">*</span></label><select>${VERTENTES.map(v=>`<option>${v.nome}</option>`).join('')}</select></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>Orçamento planejado <span class="req">*</span></label><input placeholder="R$ 0,00"></div>
+        <div class="field"><label>Metas <span class="req">*</span></label><input placeholder="Metas mensuráveis"></div>
+      </div>
+      <div class="field"><label>KPIs</label><input placeholder="Indicadores de sucesso"></div>
+      <div class="field"><label>Anexos</label><div class="attach" style="border-style:dashed;justify-content:center;color:var(--mut)">📎 Arraste arquivos ou clique para anexar (simulado)</div></div>
+    </div>
+    <div class="modal-foot"><button class="btn ghost" onclick="closeModal()">Cancelar</button><button class="btn" onclick="closeModal();toast('Projeto criado como Rascunho · Diretor notificado')">Salvar como Rascunho</button></div>
+  </div></div>`;
+}
+function modalComentar(pid){
+  document.getElementById('modalHost').innerHTML=`
+  <div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal">
+    <div class="modal-head"><h2>Novo comentário</h2><button class="x" onclick="closeModal()">×</button></div>
+    <div class="modal-body">
+      <div class="row2">
+        <div class="field"><label>Tópico <span class="req">*</span></label><select><option>Público-alvo</option><option>Orçamento</option><option>Metas</option><option>Comunicação</option><option>Outro</option></select></div>
+        <div class="field"><label>Prioridade <span class="req">*</span></label><select><option>Alta</option><option>Média</option><option>Baixa</option></select></div>
+      </div>
+      <div class="field"><label>Visibilidade <span class="req">*</span></label><select id="visSel"><option value="publico">🌐 Público (visível à vertente)</option>${['Membro do Marketing','Coordenador de Marketing'].includes(userById(state.persona).cargo)?'<option value="interno">🔒 Interno (só Marketing)</option>':''}</select></div>
+      <div class="field"><label>Descrição <span class="req">*</span></label><textarea rows="3" placeholder="Escreva seu parecer..."></textarea></div>
+      <div class="field"><label>@ Mencionar</label><select><option>—</option>${USERS.map(u=>`<option>${u.nome}</option>`).join('')}</select></div>
+    </div>
+    <div class="modal-foot"><button class="btn ghost" onclick="closeModal()">Cancelar</button><button class="btn" onclick="closeModal();toast('Comentário registrado · envolvidos notificados')">Publicar comentário</button></div>
+  </div></div>`;
+}
+function modalReuniao(pid){
+  document.getElementById('modalHost').innerHTML=`
+  <div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal">
+    <div class="modal-head"><h2>Agendar reunião</h2><button class="x" onclick="closeModal()">×</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Título <span class="req">*</span></label><input placeholder="Ex.: Deliberação final"></div>
+      <div class="row2">
+        <div class="field"><label>Data <span class="req">*</span></label><input type="date"></div>
+        <div class="field"><label>Hora <span class="req">*</span></label><input type="time"></div>
+      </div>
+      <div class="field"><label>Pauta</label><textarea rows="2" placeholder="Assuntos da reunião"></textarea></div>
+      <div class="field"><label>Participantes</label><select multiple size="4">${USERS.map(u=>`<option>${u.nome}</option>`).join('')}</select></div>
+    </div>
+    <div class="modal-foot"><button class="btn ghost" onclick="closeModal()">Cancelar</button><button class="btn ora" onclick="closeModal();toast('Reunião agendada · participantes notificados')">Agendar</button></div>
+  </div></div>`;
+}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('show'),2600)}
+
+render();
+</script>
+</body>
+</html>
