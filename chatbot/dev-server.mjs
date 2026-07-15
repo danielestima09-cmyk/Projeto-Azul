@@ -14,7 +14,7 @@ import { readFile } from 'node:fs/promises';
 import { readFileSync, existsSync } from 'node:fs';
 import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import handler from './api/chat.js';
+import handler from '../api/chat.js';
 
 const HERE = fileURLToPath(new URL('.', import.meta.url));      // .../chatbot/
 const ROOT = normalize(join(HERE, '..'));                       // raiz do repo

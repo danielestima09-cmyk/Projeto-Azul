@@ -9,10 +9,10 @@
 // - Score/status são recalculados de forma determinística no backend.
 // - Erros nunca expõem chaves, prompts internos ou detalhes técnicos.
 
-import { SYSTEM_PROMPT, GUARDRAILS, buildEvaluationContext } from '../lib/prompts.js';
-import { validateChatRequest } from '../lib/validation.js';
-import { rateLimit } from '../lib/rateLimit.js';
-import { evaluate } from '../lib/scoring.js';
+import { SYSTEM_PROMPT, GUARDRAILS, buildEvaluationContext } from './_lib/prompts.js';
+import { validateChatRequest } from './_lib/validation.js';
+import { rateLimit } from './_lib/rateLimit.js';
+import { evaluate } from './_lib/scoring.js';
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 const DEFAULT_MODEL = 'google/gemini-3-flash-preview';

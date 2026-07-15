@@ -11,20 +11,27 @@ Componente **modular e isolado** — não recria nem altera o site/protótipo ex
 
 ## 1. Arquivos
 
+Estrutura no repositório (layout compatível com a Vercel):
+
 ```
-chatbot/
-├── chatbot.js          # widget do frontend (vanilla JS, classes .abos-*)
-├── chatbot.css         # estilos isolados (prefixo .abos-)
-├── demo.html           # preview OFFLINE do widget (transporte simulado, sem backend)
-├── package.json        # { "type": "module" } para a serverless usar ESM
-├── .env.example        # variáveis de ambiente
+/ (raiz do repo)
+├── index.html          # redireciona para /prototipos/index.html
+├── package.json        # { "type": "module" } (ESM para as funções serverless)
 ├── api/
-│   └── chat.js         # função serverless (Vercel): POST /api/chat
-└── lib/
-    ├── prompts.js      # system prompt + contexto (dados) + guardrails
-    ├── scoring.js      # cálculo determinístico de score e status (fonte da verdade)
-    ├── rateLimit.js    # rate limiting simples por IP
-    └── validation.js   # validação/sanitização das requisições
+│   ├── chat.js         # função serverless (Vercel): POST /api/chat
+│   └── _lib/           # helpers (prefixo "_" = não vira rota nem é servido como estático)
+│       ├── prompts.js  # system prompt + contexto (dados) + guardrails
+│       ├── scoring.js  # cálculo determinístico de score e status (fonte da verdade)
+│       ├── rateLimit.js
+│       └── validation.js
+├── prototipos/         # protótipos (o base.html já integra o chatbot)
+└── chatbot/
+    ├── chatbot.js      # widget do frontend (vanilla JS, classes .abos-*)
+    ├── chatbot.css     # estilos isolados (prefixo .abos-)
+    ├── demo.html       # preview OFFLINE do widget (transporte simulado)
+    ├── dev-server.mjs  # servidor local p/ testar com o modelo real
+    ├── .env.example    # exemplo de variáveis de ambiente
+    └── .env.local      # (ignorado pelo git) sua chave para uso local
 ```
 
 ## 2. Ver o widget agora (sem backend)
@@ -100,7 +107,7 @@ A função `api/chat.js`:
 - aceita **somente `POST`**;
 - **valida** e **sanitiza** (limita quantidade e tamanho de mensagens; descarta papéis `system` vindos do cliente);
 - aplica **rate limiting por IP**;
-- **recalcula score e status de forma determinística** (`lib/scoring.js`) — o cliente não consegue forjar o status;
+- **recalcula score e status de forma determinística** (`api/_lib/scoring.js`) — o cliente não consegue forjar o status;
 - adiciona o **system prompt** e trata o material do projeto **apenas como dados** (defesa contra prompt injection);
 - chama o **OpenRouter** (`https://openrouter.ai/api/v1/chat/completions`) com **Gemini Flash** e **temperatura baixa** (0.2);
 - **não expõe** chaves, prompts internos nem detalhes técnicos em erros.
@@ -116,11 +123,13 @@ Em **Project → Settings → Environment Variables**, adicione:
 Local (`.env.local`): copie de `.env.example`. **Nunca** versione a chave real.
 
 ### Layout de deploy
-Para a Vercel reconhecer a função serverless, `api/` precisa estar na **raiz do deploy**.
-Duas opções:
-- **Recomendado:** em *Project Settings → Root Directory*, aponte para `chatbot/`.
-  Assim `chatbot/api/chat.js` vira `/api/chat`, e `chatbot.js`/`chatbot.css` são servidos como estáticos.
-- **Ou** mova `api/` e `lib/` para a raiz do projeto e sirva `chatbot.js`/`chatbot.css` da raiz.
+O repositório já está no layout que a Vercel entende **sem configuração**:
+- `api/chat.js` na raiz → vira a rota `/api/chat` automaticamente;
+- `api/_lib/*` são helpers (o prefixo `_` evita que virem rota ou sejam servidos como estático);
+- os arquivos estáticos (`index.html`, `prototipos/`, `chatbot/`) são servidos direto.
+
+Basta importar o repositório na Vercel (Root Directory = raiz, sem framework) e definir as variáveis
+de ambiente. Nenhum `vercel.json` é necessário.
 
 Rodar localmente com o backend:
 ```bash
