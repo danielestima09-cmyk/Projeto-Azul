@@ -863,7 +863,7 @@ function updateChatbotVisibility(){
   var root=document.getElementById('abos-chatbot-root');
   if(!root)return;
   var show=false,ev=null;
-  // Disponível apenas para o Funcionário de Vertente: a triagem por IA é ferramenta
+  // Disponível apenas para o Tripulante de Vertente: a triagem por IA é ferramenta
   // da vertente para ajustar a proposta antes de ela chegar (pronta) ao Marketing.
   if(state.screen==='app'&&state.view==='detalhe'&&state.proj&&userById(state.persona).cargo==='Tripulante de Vertente'){
     var x=PROJETOS.find(p=>p.id===state.proj);
