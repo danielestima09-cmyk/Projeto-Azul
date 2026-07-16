@@ -182,7 +182,7 @@
 /* ===== DADOS SINTÉTICOS — Versão Enriquecida ===== */
 const VERTENTES=[{id:'v1',nome:'Rotas & Malha Aérea'},{id:'v2',nome:'Experiência do Cliente'},{id:'v3',nome:'TudoAzul (Fidelidade)'},{id:'v4',nome:'Produtos de Bordo'},{id:'v5',nome:'Institucional'}];
 const USERS=[
-  {id:'u1',nome:'Marina Costa',cargo:'Funcionário de Vertente',vert:'v1',email:'marina.costa@voeazul.com.br'},
+  {id:'u1',nome:'Marina Costa',cargo:'Tripulante de Vertente',vert:'v1',email:'marina.costa@voeazul.com.br'},
   {id:'u2',nome:'Ricardo Alves',cargo:'Diretor de Vertente',vert:'v1',email:'ricardo.alves@voeazul.com.br'},
   {id:'u3',nome:'Paula Menezes',cargo:'Membro do Marketing',vert:'mkt',email:'paula.menezes@voeazul.com.br'},
   {id:'u4',nome:'Bruno Tavares',cargo:'Coordenador de Marketing',vert:'mkt',email:'bruno.tavares@voeazul.com.br'},
@@ -277,7 +277,7 @@ function go(v){state.view=v;state.proj=null;render();window.scrollTo(0,0)}
 function openProj(id){state.proj=id;state.view='detalhe';state.tab='geral';state.selAnot=null;render();window.scrollTo(0,0)}
 function setTab(t){state.tab=t;state.selAnot=null;render()}
 function canSeeComment(c){const p=userById(state.persona);if(c.vis==='publico')return true;return['Membro do Marketing','Coordenador de Marketing','Presidente'].includes(p.cargo)}
-function visibleProjects(){const p=userById(state.persona);let l=[...PROJETOS];if(p.cargo==='Funcionário de Vertente'||p.cargo==='Diretor de Vertente')l=l.filter(x=>x.vert===p.vert);if(p.cargo==='Membro do Marketing'||p.cargo==='Coordenador de Marketing')l=l.filter(x=>['alinhamento','analise','aprovado','divulgacao','concluido'].includes(x.status));return l}
+function visibleProjects(){const p=userById(state.persona);let l=[...PROJETOS];if(p.cargo==='Tripulante de Vertente'||p.cargo==='Diretor de Vertente')l=l.filter(x=>x.vert===p.vert);if(p.cargo==='Membro do Marketing'||p.cargo==='Coordenador de Marketing')l=l.filter(x=>['alinhamento','analise','aprovado','divulgacao','concluido'].includes(x.status));return l}
 
 /* ===== RENDER ===== */
 function render(){
@@ -307,9 +307,9 @@ function viewProjetos(){
   if(state.fStatus)list=list.filter(x=>x.status===state.fStatus);
   if(state.fVert)list=list.filter(x=>x.vert===state.fVert);
   if(state.fBusca)list=list.filter(x=>x.nome.toLowerCase().includes(state.fBusca.toLowerCase()));
-  const canCreate=p.cargo==='Funcionário de Vertente';
+  const canCreate=p.cargo==='Tripulante de Vertente';
   const late=list.filter(x=>slaState(x).late).length;
-  const heads={'Funcionário de Vertente':'Projetos que você criou','Diretor de Vertente':'Projetos da sua vertente','Membro do Marketing':'Projetos aguardando parecer','Coordenador de Marketing':'Pendências de aprovação','Presidente':'Todos os projetos','Administrador':'Todos os projetos'};
+  const heads={'Tripulante de Vertente':'Projetos que você criou','Diretor de Vertente':'Projetos da sua vertente','Membro do Marketing':'Projetos aguardando parecer','Coordenador de Marketing':'Pendências de aprovação','Presidente':'Todos os projetos','Administrador':'Todos os projetos'};
   return `<div class="page-head"><div><h1>${heads[p.cargo]||'Projetos'}</h1><p>${list.length} projeto(s) · visão de ${p.cargo}</p></div>${canCreate?`<button class="btn" onclick="modalCriar()">＋ Criar projeto</button>`:''}</div>
   ${late?`<div class="banner warn">⏰ <b>${late}</b> projeto(s) com prazo de etapa estourado — veja <b onclick="go('prazos')" style="cursor:pointer;text-decoration:underline">Prazos & SLA</b>.</div>`:''}
   <div class="filters">
@@ -345,7 +345,7 @@ function viewDetalhe(){
 function actionsFor(x,p){
   if(p.cargo==='Diretor de Vertente'&&x.status==='revisao'&&x.vert===p.vert)return `<button class="btn grn sm" onclick="act('aprovou para análise')">✔ Aprovar p/ Marketing</button><button class="btn danger sm" onclick="act('devolveu para ajustes')">↩ Devolver</button>`;
   if(p.cargo==='Coordenador de Marketing'&&x.status==='analise')return `<button class="btn grn sm" onclick="modalAssinar('${x.id}')">✔ Aprovar (e-assinatura)</button><button class="btn danger sm" onclick="act('reprovou o projeto')">✖ Reprovar</button><button class="btn ora sm" onclick="modalReuniao('${x.id}')">📅 Reunião</button>`;
-  if(p.cargo==='Funcionário de Vertente'&&x.status==='rascunho'&&x.criador===p.id)return `<button class="btn ora sm" onclick="act('solicitou alinhamento com o Marketing')">💬 Alinhar c/ Marketing</button><button class="btn sm" onclick="act('submeteu ao Diretor')">➤ Submeter</button>`;
+  if(p.cargo==='Tripulante de Vertente'&&x.status==='rascunho'&&x.criador===p.id)return `<button class="btn ora sm" onclick="act('solicitou alinhamento com o Marketing')">💬 Alinhar c/ Marketing</button><button class="btn sm" onclick="act('submeteu ao Diretor')">➤ Submeter</button>`;
   return '';
 }
 function tabGeral(x){
