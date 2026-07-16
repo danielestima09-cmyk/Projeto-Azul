@@ -10,6 +10,7 @@
 // - Erros nunca expõem chaves, prompts internos ou detalhes técnicos.
 
 import { SYSTEM_PROMPT, GUARDRAILS, buildEvaluationContext } from './_lib/prompts.js';
+import { buildKnowledgeContext } from './_lib/knowledgeBase.js';
 import { validateChatRequest } from './_lib/validation.js';
 import { rateLimit } from './_lib/rateLimit.js';
 import { evaluate } from './_lib/scoring.js';
@@ -68,10 +69,13 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Serviço de avaliação temporariamente indisponível.' });
     }
 
-    // 7) Monta as mensagens (system sempre primeiro; projeto sempre como dado)
+    // 7) Monta as mensagens. Ordem importa: system prompt e guardrails primeiro;
+    //    depois as BASES como material de referência (dado, não instrução);
+    //    por fim o projeto (também dado) e o histórico do tripulante.
     const payloadMessages = [
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'system', content: GUARDRAILS },
+      { role: 'system', content: buildKnowledgeContext() },
       { role: 'system', content: buildEvaluationContext(projectEvaluation, canonical) },
       ...messages,
     ];
