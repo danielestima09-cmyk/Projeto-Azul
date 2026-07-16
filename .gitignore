@@ -13,3 +13,6 @@ node_modules/
 
 # Credenciais locais do Claude Code
 .claude/
+
+# Assets e saídas de teste local (imagens reais + avaliações geradas)
+teste da IA/
