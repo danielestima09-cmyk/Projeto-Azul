@@ -7,7 +7,7 @@
 <style>
   :root{
     --azul-deep:#002A8F; --azul:#0060B7; --azul-sky:#00A3E0; --azul-soft:#E8F1FB;
-    --ora:#F58220; --yel:#FFC72C; --grn:#43B02A; --pur:#6D2077; --mag:#E4002B;
+    --ora:#00875A; --yel:#FFC72C; --grn:#43B02A; --pur:#6D2077; --mag:#6D2077;
     --ink:#16233D; --mut:#5B6B84; --line:#E2E8F2; --bg:#F4F7FC; --card:#FFFFFF;
     --ok:#1F9D55; --warn:#E7A600; --shadow:0 4px 18px rgba(0,42,143,.08);
   }
@@ -20,6 +20,9 @@
   /* ---------- Top bar ---------- */
   .topbar{height:60px;background:linear-gradient(100deg,var(--azul-deep),var(--azul));display:flex;align-items:center;justify-content:space-between;padding:0 20px;color:#fff;position:sticky;top:0;z-index:50;box-shadow:0 2px 12px rgba(0,42,143,.25)}
   .brand{display:flex;align-items:center;gap:12px}
+  .brand-logo-wrap{background:#fff;border-radius:9px;padding:5px 10px;display:flex;align-items:center;box-shadow:0 1px 5px rgba(0,0,0,.18)}
+  .brand-logo{height:26px;display:block}
+  .auth-logo{height:40px;display:block;margin:0 auto}
   .wordmark{font-weight:800;font-size:22px;letter-spacing:.5px;display:flex;align-items:center;gap:2px}
   .wordmark .l1{color:#BFE3FF}.wordmark .l2{color:#7FC4F0}.wordmark .l3{color:#fff}.wordmark .l4{color:#DCEEFF}
   .mosaic{display:grid;grid-template-columns:repeat(3,6px);grid-gap:2px;margin-left:4px}
@@ -53,10 +56,10 @@
   .btn:hover{background:var(--azul-deep)}
   .btn.ghost{background:#fff;color:var(--azul);border:1px solid var(--line);box-shadow:none}
   .btn.ghost:hover{background:var(--azul-soft)}
-  .btn.ora{background:var(--ora)}.btn.ora:hover{background:#d96e0f}
+  .btn.ora{background:var(--ora)}.btn.ora:hover{background:#00694A}
   .btn.grn{background:var(--grn)}.btn.grn:hover{background:#369022}
   .btn.sm{padding:7px 12px;font-size:12px}
-  .btn.danger{background:#fff;color:var(--mag);border:1px solid #F3C6CE;box-shadow:none}
+  .btn.danger{background:#fff;color:var(--mag);border:1px solid #D9BCE3;box-shadow:none}
 
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
   .grid{display:grid;gap:16px}
@@ -66,14 +69,14 @@
 
   .badge-status{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap;display:inline-block}
   .st-rascunho{background:#EEF1F6;color:#5B6B84}
-  .st-revisao{background:#FFF3DA;color:#B7791F}
+  .st-revisao{background:#FFF3DA;color:#8A6D00}
   .st-analise{background:#E1F0FF;color:#0060B7}
   .st-aprovado{background:#E3F6E9;color:#1F9D55}
   .st-divulgacao{background:#F1E7F7;color:#6D2077}
   .st-concluido{background:#DCF3F1;color:#0B7A70}
 
   .chip{font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px}
-  .p-alta{background:#FCE4E6;color:#C0263A}.p-media{background:#FFF1DA;color:#B7791F}.p-baixa{background:#E7F0FE;color:#3E6DB5}
+  .p-alta{background:#F3E8F7;color:#6D2077}.p-media{background:#FFF7DA;color:#8A6D00}.p-baixa{background:#E7F0FE;color:#3E6DB5}
   .vis-int{background:#EDE4F5;color:#6D2077}.vis-pub{background:#E1F0FF;color:#0060B7}
 
   /* project cards */
@@ -87,8 +90,8 @@
   .tag-vert{font-size:11px;background:var(--azul-soft);color:var(--azul-deep);font-weight:700;padding:2px 9px;border-radius:20px}
   .prazo{font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:8px;display:inline-flex;align-items:center;gap:6px;margin:2px 0 4px}
   .prazo-ok{background:#E3F6E9;color:#1F9D55}
-  .prazo-warn{background:#FFF1DA;color:#B7791F}
-  .prazo-late{background:#FCE4E6;color:#C0263A}
+  .prazo-warn{background:#FFF7DA;color:#8A6D00}
+  .prazo-late{background:#F3E8F7;color:#6D2077}
 
   /* detail */
   .tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:18px 0}
@@ -172,7 +175,7 @@
 
   /* ===== Chatbot ABOS (cópia embutida de /chatbot para o protótipo offline) ===== */
   .abos-chatbot,.abos-chatbot *{box-sizing:border-box}
-  .abos-chatbot{--abos-deep:#002A8F;--abos-blue:#0060B7;--abos-sky:#00A3E0;--abos-ora:#F58220;--abos-ink:#16233D;--abos-mut:#5B6B84;--abos-line:#E2E8F2;--abos-bg:#F4F7FC;--abos-user:#0060B7;font-family:"Segoe UI",Roboto,-apple-system,Arial,sans-serif;font-size:14px;line-height:1.45;color:var(--abos-ink)}
+  .abos-chatbot{--abos-deep:#002A8F;--abos-blue:#0060B7;--abos-sky:#00A3E0;--abos-ora:#00875A;--abos-ink:#16233D;--abos-mut:#5B6B84;--abos-line:#E2E8F2;--abos-bg:#F4F7FC;--abos-user:#0060B7;font-family:"Segoe UI",Roboto,-apple-system,Arial,sans-serif;font-size:14px;line-height:1.45;color:var(--abos-ink)}
   .abos-fab{position:fixed;right:22px;bottom:22px;z-index:2147483000;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--abos-deep),var(--abos-blue));color:#fff;font-size:26px;display:grid;place-items:center;cursor:pointer;border:none;box-shadow:0 8px 26px rgba(0,42,143,.35);transition:transform .15s ease}
   .abos-fab:hover{transform:translateY(-2px) scale(1.03)}
   .abos-fab:focus-visible{outline:3px solid var(--abos-sky);outline-offset:3px}
@@ -192,7 +195,7 @@
   @keyframes abos-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   .abos-msg-bot{align-self:flex-start;background:#fff;border:1px solid var(--abos-line);border-bottom-left-radius:4px}
   .abos-msg-user{align-self:flex-end;background:var(--abos-user);color:#fff;border-bottom-right-radius:4px}
-  .abos-msg-error{align-self:center;background:#FCE4E6;color:#C0263A;border:1px solid #F3C6CE;font-size:12.5px;max-width:95%}
+  .abos-msg-error{align-self:center;background:#F3E8F7;color:#6D2077;border:1px solid #D9BCE3;font-size:12.5px;max-width:95%}
   .abos-typing{align-self:flex-start;background:#fff;border:1px solid var(--abos-line);border-radius:14px;border-bottom-left-radius:4px;padding:12px 14px;display:inline-flex;gap:4px}
   .abos-typing i{width:7px;height:7px;border-radius:50%;background:var(--abos-mut);display:inline-block;animation:abos-blink 1.2s infinite ease-in-out}
   .abos-typing i:nth-child(2){animation-delay:.2s}.abos-typing i:nth-child(3){animation-delay:.4s}
@@ -212,9 +215,7 @@
 <body>
 <div class="topbar">
   <div class="brand">
-    <div class="wordmark"><span class="l1">A</span><span class="l2">z</span><span class="l3">u</span><span class="l4">l</span>
-      <span class="mosaic"><i style="background:#00A3E0"></i><i style="background:#FFC72C"></i><i style="background:#43B02A"></i><i style="background:#6D2077"></i><i style="background:#F58220"></i><i style="background:#0060B7"></i></span>
-    </div>
+    <span class="brand-logo-wrap"><img class="brand-logo" src="../public/logo-azul.png" alt="Azul"></span>
     <span class="app-name">Projeto Azul · Protótipo Base</span>
   </div>
   <div class="top-right">
@@ -433,10 +434,10 @@ const COMENTARIOS = [
    texto:'Meta de reativação parece ambiciosa. Podemos escalonar por segmento?',data:'21/06/2026',mencao:'u1'},
 ];
 const ANEXOS = [
-  {id:'a1',proj:'p1',nome:'Brief_Campinas_Orlando.pdf',tipo:'PDF',cor:'#E4002B',tam:'2,4 MB'},
+  {id:'a1',proj:'p1',nome:'Brief_Campinas_Orlando.pdf',tipo:'PDF',cor:'#6D2077',tam:'2,4 MB'},
   {id:'a2',proj:'p1',nome:'Arte_KV_Principal.jpg',tipo:'IMG',cor:'#6D2077',tam:'5,1 MB'},
   {id:'a3',proj:'p1',nome:'Plano_de_Midia.xlsx',tipo:'XLS',cor:'#43B02A',tam:'880 KB'},
-  {id:'a4',proj:'p3',nome:'Apresentacao_EspacoAzul.pptx',tipo:'PPT',cor:'#F58220',tam:'6,7 MB'},
+  {id:'a4',proj:'p3',nome:'Apresentacao_EspacoAzul.pptx',tipo:'PPT',cor:'#00875A',tam:'6,7 MB'},
 ];
 const REUNIOES = [
   {id:'r1',proj:'p1',titulo:'Alinhamento de identidade visual',data:'12/07/2026',hora:'14:00',pauta:'Ajustar KV à campanha institucional',parts:['u1','u3','u4']},
@@ -573,7 +574,7 @@ function viewProjetos(){
   if(isMarketing(p.cargo)){
     const pend=list.filter(x=>x.status==='analise');
     const atrasados=pend.filter(x=>{const i=prazoInfo(x);return i&&i.late;});
-    if(pend.length)mktBanner=`<div class="banner">📅 Você tem <b>${pend.length}</b> projeto(s) aguardando sua resposta${atrasados.length?` — <b style="color:#C0263A">${atrasados.length} com prazo vencido</b>`:''}. Responda dentro do prazo indicado em cada card.</div>`;
+    if(pend.length)mktBanner=`<div class="banner">📅 Você tem <b>${pend.length}</b> projeto(s) aguardando sua resposta${atrasados.length?` — <b style="color:#6D2077">${atrasados.length} com prazo vencido</b>`:''}. Responda dentro do prazo indicado em cada card.</div>`;
   }
   return `
   <div class="page-head">
@@ -706,7 +707,7 @@ function viewDashboard(){
   const byVert=VERTENTES.filter(v=>scope.some(p=>p.vert===v.id)).map(v=>({nome:v.nome,n:scope.filter(p=>p.vert===v.id).length}));
   const maxV=Math.max(...byVert.map(v=>v.n),1);
   const maxOrc=Math.max(...scope.map(p=>p.orc),1);
-  const mcolors=['#0060B7','#00A3E0','#43B02A','#FFC72C','#F58220','#6D2077'];
+  const mcolors=['#0060B7','#00A3E0','#43B02A','#FFC72C','#00875A','#6D2077'];
   if(!scope.length)return `<div class="page-head"><div><h1>Dashboard</h1><p>${scopeLabel}</p></div></div><div class="empty"><div class="big">📊</div>Ainda não há projetos para exibir.</div>`;
   return `
   <div class="page-head"><div><h1>Dashboard${isDir?'':' Executivo'}</h1><p>${scopeLabel}</p></div>
@@ -879,11 +880,11 @@ function updateChatbotVisibility(){
 }
 
 /* ===== AUTENTICAÇÃO (login / escolha de papel) ===== */
-const AUTH_MOSAIC=`<span class="mosaic" style="margin-left:6px"><i style="background:#00A3E0"></i><i style="background:#FFC72C"></i><i style="background:#43B02A"></i><i style="background:#6D2077"></i><i style="background:#F58220"></i><i style="background:#0060B7"></i></span>`;
+const AUTH_MOSAIC=`<span class="mosaic" style="margin-left:6px"><i style="background:#00A3E0"></i><i style="background:#FFC72C"></i><i style="background:#43B02A"></i><i style="background:#6D2077"></i><i style="background:#00875A"></i><i style="background:#0060B7"></i></span>`;
 function loginScreen(){
   return `<div class="auth-wrap"><div class="auth-card">
     <div class="auth-brand">
-      <div class="wm">Azul${AUTH_MOSAIC}</div>
+      <img class="auth-logo" src="../public/logo-azul.png" alt="Azul">
       <div style="font-weight:800;font-size:15px;color:var(--ink);margin-top:8px">Projeto Azul</div>
       <div class="sub">Acesso corporativo — entre com seu email e senha</div>
     </div>

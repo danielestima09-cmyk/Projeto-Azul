@@ -11,7 +11,7 @@
   --abos-deep: #002A8F;
   --abos-blue: #0060B7;
   --abos-sky: #00A3E0;
-  --abos-ora: #F58220;
+  --abos-ora: #00875A;
   --abos-ink: #16233D;
   --abos-mut: #5B6B84;
   --abos-line: #E2E8F2;
@@ -168,9 +168,9 @@
 }
 .abos-msg-error {
   align-self: center;
-  background: #FCE4E6;
-  color: #C0263A;
-  border: 1px solid #F3C6CE;
+  background: #F3E8F7;
+  color: #6D2077;
+  border: 1px solid #D9BCE3;
   font-size: 12.5px;
   max-width: 95%;
 }

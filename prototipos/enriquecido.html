@@ -7,7 +7,7 @@
 <style>
   :root{
     --azul-deep:#002A8F; --azul:#0060B7; --azul-sky:#00A3E0; --azul-soft:#E8F1FB;
-    --ora:#F58220; --yel:#FFC72C; --grn:#43B02A; --pur:#6D2077; --mag:#E4002B;
+    --ora:#00875A; --yel:#FFC72C; --grn:#43B02A; --pur:#6D2077; --mag:#6D2077;
     --ink:#16233D; --mut:#5B6B84; --line:#E2E8F2; --bg:#F4F7FC; --card:#FFFFFF;
     --ok:#1F9D55; --warn:#E7A600; --shadow:0 4px 18px rgba(0,42,143,.08);
   }
@@ -17,6 +17,8 @@
   .hidden{display:none!important}
   .topbar{height:60px;background:linear-gradient(100deg,var(--azul-deep),var(--azul));display:flex;align-items:center;justify-content:space-between;padding:0 20px;color:#fff;position:sticky;top:0;z-index:50;box-shadow:0 2px 12px rgba(0,42,143,.25)}
   .brand{display:flex;align-items:center;gap:12px}
+  .brand-logo-wrap{background:#fff;border-radius:9px;padding:5px 10px;display:flex;align-items:center;box-shadow:0 1px 5px rgba(0,0,0,.18)}
+  .brand-logo{height:26px;display:block}
   .wordmark{font-weight:800;font-size:22px;letter-spacing:.5px;display:flex;align-items:center;gap:2px}
   .wordmark .l1{color:#BFE3FF}.wordmark .l2{color:#7FC4F0}.wordmark .l3{color:#fff}.wordmark .l4{color:#DCEEFF}
   .mosaic{display:grid;grid-template-columns:repeat(3,6px);grid-gap:2px;margin-left:4px}
@@ -47,25 +49,25 @@
   .btn{background:var(--azul);color:#fff;padding:10px 18px;border-radius:9px;font-weight:700;font-size:13px;display:inline-flex;align-items:center;gap:8px;box-shadow:var(--shadow)}
   .btn:hover{background:var(--azul-deep)}
   .btn.ghost{background:#fff;color:var(--azul);border:1px solid var(--line);box-shadow:none}.btn.ghost:hover{background:var(--azul-soft)}
-  .btn.ora{background:var(--ora)}.btn.ora:hover{background:#d96e0f}
+  .btn.ora{background:var(--ora)}.btn.ora:hover{background:#00694A}
   .btn.grn{background:var(--grn)}.btn.grn:hover{background:#369022}
   .btn.ia{background:linear-gradient(100deg,#6D2077,#9b3bb0)}.btn.ia:hover{filter:brightness(1.08)}
   .btn.sm{padding:7px 12px;font-size:12px}
-  .btn.danger{background:#fff;color:var(--mag);border:1px solid #F3C6CE;box-shadow:none}
+  .btn.danger{background:#fff;color:var(--mag);border:1px solid #D9BCE3;box-shadow:none}
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
   .grid{display:grid;gap:16px}
   .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
   .filters select,.filters input{padding:9px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;font-size:13px;outline:none}
   .filters input{min-width:220px}
   .badge-status{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap;display:inline-block}
-  .st-rascunho{background:#EEF1F6;color:#5B6B84}.st-alinhamento{background:#FEEFE0;color:#C4700F}
-  .st-revisao{background:#FFF3DA;color:#B7791F}.st-analise{background:#E1F0FF;color:#0060B7}
+  .st-rascunho{background:#EEF1F6;color:#5B6B84}.st-alinhamento{background:#FEEFE0;color:#00694A}
+  .st-revisao{background:#FFF3DA;color:#8A6D00}.st-analise{background:#E1F0FF;color:#0060B7}
   .st-aprovado{background:#E3F6E9;color:#1F9D55}.st-divulgacao{background:#F1E7F7;color:#6D2077}.st-concluido{background:#DCF3F1;color:#0B7A70}
   .chip{font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px}
-  .p-alta{background:#FCE4E6;color:#C0263A}.p-media{background:#FFF1DA;color:#B7791F}.p-baixa{background:#E7F0FE;color:#3E6DB5}
+  .p-alta{background:#F3E8F7;color:#6D2077}.p-media{background:#FFF7DA;color:#8A6D00}.p-baixa{background:#E7F0FE;color:#3E6DB5}
   .vis-int{background:#EDE4F5;color:#6D2077}.vis-pub{background:#E1F0FF;color:#0060B7}
   .sla{font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px}
-  .sla-ok{background:#E3F6E9;color:#1F9D55}.sla-warn{background:#FFF1DA;color:#B7791F}.sla-late{background:#FCE4E6;color:#C0263A}
+  .sla-ok{background:#E3F6E9;color:#1F9D55}.sla-warn{background:#FFF7DA;color:#8A6D00}.sla-late{background:#F3E8F7;color:#6D2077}
   .proj-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
   .proj-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow);cursor:pointer;transition:.15s;border-left:5px solid var(--azul-sky)}
   .proj-card:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,42,143,.14)}
@@ -74,7 +76,7 @@
   .proj-foot{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
   .mini{font-size:12px;color:var(--mut);display:flex;align-items:center;gap:5px}
   .tag-vert{font-size:11px;background:var(--azul-soft);color:var(--azul-deep);font-weight:700;padding:2px 9px;border-radius:20px}
-  .tag-tipo{font-size:11px;background:#FDF3E7;color:#C4700F;font-weight:700;padding:2px 9px;border-radius:20px}
+  .tag-tipo{font-size:11px;background:#E3F5EC;color:#00694A;font-weight:700;padding:2px 9px;border-radius:20px}
   .tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:18px 0;flex-wrap:wrap}
   .tab{padding:10px 16px;font-weight:700;color:var(--mut);border-bottom:3px solid transparent;cursor:pointer;font-size:13px}
   .tab.active{color:var(--azul-deep);border-color:var(--azul)}
@@ -130,7 +132,7 @@
   .toast.show{opacity:1;bottom:36px}
   .empty{text-align:center;color:var(--mut);padding:50px 20px}.empty .big{font-size:40px;margin-bottom:10px}
   .banner{background:var(--azul-soft);border:1px solid #CBE1F7;border-radius:12px;padding:12px 16px;font-size:12px;color:var(--azul-deep);margin-bottom:18px;display:flex;gap:10px;align-items:center}
-  .banner.warn{background:#FFF6EC;border-color:#F6D9B8;color:#C4700F}
+  .banner.warn{background:#FFF6EC;border-color:#F6D9B8;color:#00694A}
   .info-pill{font-size:11px;background:#EEF1F6;color:var(--mut);padding:2px 9px;border-radius:20px;font-weight:600}
   /* IA box */
   .ia-box{background:linear-gradient(120deg,#F7F0FB,#fff);border:1px solid #E6D5F1;border-radius:12px;padding:16px;margin-bottom:14px}
@@ -149,10 +151,10 @@
   .pin b{transform:rotate(45deg);color:#fff;font-size:12px}
   .pin.sel{background:var(--mag);z-index:5}
   .annot{border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px;background:#fff;display:flex;gap:12px;cursor:pointer}
-  .annot.sel{border-color:var(--ora);box-shadow:0 0 0 2px #FCE9D6}
+  .annot.sel{border-color:var(--ora);box-shadow:0 0 0 2px #D6F0E2}
   .annot .num{width:24px;height:24px;border-radius:50%;background:var(--ora);color:#fff;font-weight:700;display:grid;place-items:center;flex-shrink:0;font-size:12px}
   .est{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px}
-  .est-ok{background:#E3F6E9;color:#1F9D55}.est-adj{background:#FFF1DA;color:#B7791F}.est-mud{background:#FCE4E6;color:#C0263A}
+  .est-ok{background:#E3F6E9;color:#1F9D55}.est-adj{background:#FFF7DA;color:#8A6D00}.est-mud{background:#F3E8F7;color:#6D2077}
   .checkitem{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px}
   .checkitem .box{width:20px;height:20px;border-radius:5px;display:grid;place-items:center;color:#fff;flex-shrink:0}
   .compare{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -163,9 +165,7 @@
 <body>
 <div class="topbar">
   <div class="brand">
-    <div class="wordmark"><span class="l1">A</span><span class="l2">z</span><span class="l3">u</span><span class="l4">l</span>
-      <span class="mosaic"><i style="background:#00A3E0"></i><i style="background:#FFC72C"></i><i style="background:#43B02A"></i><i style="background:#6D2077"></i><i style="background:#F58220"></i><i style="background:#0060B7"></i></span>
-    </div>
+    <span class="brand-logo-wrap"><img class="brand-logo" src="../public/logo-azul.png" alt="Azul"></span>
     <span class="app-name">Projeto Azul<span class="tagE">Enriquecido</span></span>
   </div>
   <div class="top-right">
@@ -191,7 +191,7 @@ const USERS=[
 ];
 const STATUS={
   rascunho:{label:'Rascunho',cls:'st-rascunho',color:'#5B6B84'},
-  alinhamento:{label:'Alinhamento c/ Mkt',cls:'st-alinhamento',color:'#C4700F'},
+  alinhamento:{label:'Alinhamento c/ Mkt',cls:'st-alinhamento',color:'#00694A'},
   revisao:{label:'Em revisão',cls:'st-revisao',color:'#E7A600'},
   analise:{label:'Em análise',cls:'st-analise',color:'#0060B7'},
   aprovado:{label:'Aprovado',cls:'st-aprovado',color:'#1F9D55'},
@@ -234,7 +234,7 @@ const COMENTARIOS=[
   {id:'c3',proj:'p1',autor:'u4',topico:'Comunicação',prio:'alta',vis:'publico',texto:'Precisamos alinhar a identidade visual com a campanha institucional vigente. Marcar reunião.',data:'06/06/2026',mencao:'u1'},
   {id:'c4',proj:'p2',autor:'u2',topico:'Metas',prio:'media',vis:'publico',texto:'Meta de reativação parece ambiciosa. Podemos escalonar por segmento?',data:'21/06/2026',mencao:'u1'},
 ];
-const ANEXOS=[{id:'a1',proj:'p1',nome:'Brief_Campinas_Orlando.pdf',tipo:'PDF',cor:'#E4002B',tam:'2,4 MB'},{id:'a2',proj:'p1',nome:'Arte_KV_Principal.jpg',tipo:'IMG',cor:'#6D2077',tam:'5,1 MB',arte:true},{id:'a3',proj:'p1',nome:'Plano_de_Midia.xlsx',tipo:'XLS',cor:'#43B02A',tam:'880 KB'},{id:'a4',proj:'p3',nome:'Apresentacao_EspacoAzul.pptx',tipo:'PPT',cor:'#F58220',tam:'6,7 MB'}];
+const ANEXOS=[{id:'a1',proj:'p1',nome:'Brief_Campinas_Orlando.pdf',tipo:'PDF',cor:'#6D2077',tam:'2,4 MB'},{id:'a2',proj:'p1',nome:'Arte_KV_Principal.jpg',tipo:'IMG',cor:'#6D2077',tam:'5,1 MB',arte:true},{id:'a3',proj:'p1',nome:'Plano_de_Midia.xlsx',tipo:'XLS',cor:'#43B02A',tam:'880 KB'},{id:'a4',proj:'p3',nome:'Apresentacao_EspacoAzul.pptx',tipo:'PPT',cor:'#00875A',tam:'6,7 MB'}];
 /* E2 — anotações sobre a arte (posição %, estado) */
 const ANOTACOES=[
   {id:'an1',proj:'p1',n:1,x:14,y:34,estado:'mud',autor:'u3',texto:'O título precisa reforçar "férias em família", não só o destino.',data:'05/06'},
@@ -380,7 +380,7 @@ function tabArte(x){
   <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:16px" class="art-grid">
     <div class="artboard">
       <div class="art-kv">
-        <div class="mos">${['#00A3E0','#FFC72C','#43B02A','#6D2077','#F58220','#0060B7','#00A3E0','#FFC72C'].map(c=>`<i style="background:${c}"></i>`).join('')}</div>
+        <div class="mos">${['#00A3E0','#FFC72C','#43B02A','#6D2077','#00875A','#0060B7','#00A3E0','#FFC72C'].map(c=>`<i style="background:${c}"></i>`).join('')}</div>
         <div class="eyebrow">Nova rota internacional</div>
         <h2>Campinas ✈ Orlando<br>direto pela Azul</h2>
         <div class="price">A partir de 10x R$ 289</div>
@@ -412,7 +412,7 @@ function viewDashboard(){
   const late=PROJETOS.filter(p=>slaState(p).late).length;const onTime=Math.round((PROJETOS.length-late)/PROJETOS.length*100);
   const byVert=VERTENTES.map(v=>({nome:v.nome,n:PROJETOS.filter(p=>p.vert===v.id).length}));const maxV=Math.max(...byVert.map(v=>v.n),1);
   const funnel=['rascunho','alinhamento','revisao','analise','aprovado','divulgacao','concluido'];const maxF=Math.max(...Object.values(byStatus),1);
-  const mcolors=['#0060B7','#00A3E0','#43B02A','#FFC72C','#F58220','#6D2077','#E4002B'];
+  const mcolors=['#0060B7','#00A3E0','#43B02A','#FFC72C','#00875A','#6D2077','#6D2077'];
   return `<div class="page-head"><div><h1>Dashboard Executivo</h1><p>Visão consolidada · foco em reduzir e comprovar a queda do retrabalho</p></div><button class="btn ghost" onclick="toast('Exportação simulada (PDF/Excel)')">⬇ Exportar</button></div>
   <div class="stat-row">
     <div class="stat"><div class="n">${PROJETOS.length}</div><div class="t">Projetos ativos</div></div>
@@ -485,7 +485,7 @@ function modalCriar(){
       <div class="field"><label>Tipo de projeto <span class="req">*</span> <span class="nw-pill">E1</span></label><select id="tipoSel" onchange="document.getElementById('camposTipo').innerHTML=camposTipo(this.value)">${TIPOS.map(t=>`<option value="${t.id}">${t.nome}</option>`).join('')}</select></div>
       <div class="field"><label>Nome do projeto <span class="req">*</span></label><input placeholder="Ex.: Campanha Nova Rota..."></div>
       <div class="field"><label>Objetivo <span class="req">*</span></label><textarea rows="2" placeholder="Qual o objetivo?"></textarea></div>
-      <div style="background:#FBF6F0;border:1px dashed #F0D6B8;border-radius:10px;padding:12px;margin-bottom:16px"><div style="font-size:12px;font-weight:700;color:#C4700F;margin-bottom:8px">Campos específicos do tipo (E1)</div><div id="camposTipo">${camposTipo('rota')}</div></div>
+      <div style="background:#FBF6F0;border:1px dashed #F0D6B8;border-radius:10px;padding:12px;margin-bottom:16px"><div style="font-size:12px;font-weight:700;color:#00694A;margin-bottom:8px">Campos específicos do tipo (E1)</div><div id="camposTipo">${camposTipo('rota')}</div></div>
       <div class="row2"><div class="field"><label>Público-alvo <span class="req">*</span></label><input placeholder="Quem?"></div><div class="field"><label>Orçamento <span class="req">*</span></label><input placeholder="R$ 0,00"></div></div>
       <div class="field"><label>Anexos</label><div class="attach" style="border-style:dashed;justify-content:center;color:var(--mut)">📎 Arraste arquivos ou clique (simulado)</div></div>
     </div>

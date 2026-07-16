@@ -5,10 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Projeto Azul — Protótipos</title>
 <style>
-  :root{--azul-deep:#002A8F;--azul:#0060B7;--azul-sky:#00A3E0;--ora:#F58220;--ink:#16233D;--mut:#5B6B84;--line:#E2E8F2;--bg:#F4F7FC}
+  :root{--azul-deep:#002A8F;--azul:#0060B7;--azul-sky:#00A3E0;--ora:#00875A;--ink:#16233D;--mut:#5B6B84;--line:#E2E8F2;--bg:#F4F7FC}
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:"Segoe UI",Roboto,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
   .hero{background:linear-gradient(120deg,var(--azul-deep),var(--azul));color:#fff;padding:48px 24px 60px;text-align:center}
+  .logo-pill{display:inline-flex;align-items:center;background:#fff;border-radius:14px;padding:12px 20px;box-shadow:0 8px 24px rgba(0,0,0,.22)}
+  .logo-pill img{height:44px;display:block}
   .wordmark{font-weight:800;font-size:34px;letter-spacing:.5px;display:inline-flex;align-items:center;gap:2px}
   .wordmark .l1{color:#BFE3FF}.wordmark .l2{color:#7FC4F0}.wordmark .l4{color:#DCEEFF}
   .mosaic{display:grid;grid-template-columns:repeat(3,9px);grid-gap:3px;margin-left:8px}
@@ -18,7 +20,7 @@
   .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:0 8px 30px rgba(0,42,143,.1);display:flex;flex-direction:column}
   .tag{align-self:flex-start;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:14px}
   .tag.a{background:#E1F0FF;color:var(--azul)}
-  .tag.b{background:#FDF3E7;color:var(--ora)}
+  .tag.b{background:#E3F5EC;color:var(--ora)}
   .card h2{font-size:20px;margin-bottom:8px}
   .card p{color:var(--mut);font-size:14px;line-height:1.5;margin-bottom:16px}
   .card ul{list-style:none;margin-bottom:20px;flex:1}
@@ -27,14 +29,14 @@
   .card.b li::before{color:var(--ora)}
   .btn{background:var(--azul);color:#fff;text-decoration:none;text-align:center;padding:13px;border-radius:10px;font-weight:700;font-size:14px;display:block}
   .btn:hover{background:var(--azul-deep)}
-  .btn.b{background:var(--ora)}.btn.b:hover{background:#d96e0f}
+  .btn.b{background:var(--ora)}.btn.b:hover{background:#00694A}
   .note{max-width:920px;margin:0 auto 50px;padding:0 24px;color:var(--mut);font-size:13px;text-align:center}
   .note b{color:var(--ink)}
 </style>
 </head>
 <body>
   <div class="hero">
-    <div class="wordmark">Azul<span class="mosaic"><i style="background:#00A3E0"></i><i style="background:#FFC72C"></i><i style="background:#43B02A"></i><i style="background:#6D2077"></i><i style="background:#F58220"></i><i style="background:#0060B7"></i></span></div>
+    <div class="logo-pill"><img src="../public/logo-azul.png" alt="Azul"></div>
     <p>Projeto Azul · Protótipo navegável para demonstração</p>
   </div>
   <div class="wrap">
