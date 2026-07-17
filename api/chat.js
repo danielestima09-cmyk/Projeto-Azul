@@ -16,7 +16,7 @@ import { rateLimit } from './_lib/rateLimit.js';
 import { evaluate } from './_lib/scoring.js';
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
-const DEFAULT_MODEL = 'google/gemini-3-flash-preview';
+const DEFAULT_MODEL = 'openrouter/free';
 const TEMPERATURE = 0.2; // baixa, para consistência
 // Limita o tamanho da resposta: evita reservar o máximo do modelo (e estourar crédito),
 // e mantém as respostas de triagem concisas. Configurável via OPENROUTER_MAX_TOKENS.
