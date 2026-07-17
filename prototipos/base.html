@@ -277,7 +277,7 @@
     if(/(fonte|com base|referenc|manual|base de|consult)/.test(q)){var s=ev.sourcesUsed||[];return s.length?('Tripulante, esta avaliação considerou: '+s.join('; ')+'.'):'Tripulante, não há fontes específicas registradas nesta avaliação.';}
     if(/(score|nota|pontua|aderencia|percentual|quantos pontos|quanto (tirei|foi))/.test(q))
       return 'Tripulante, o score geral de “'+ev.projectName+'” é '+(ev.overallScore==null?'—':ev.overallScore+'%')+' (média das seis dimensões). Notas: '+Object.keys(LABEL).map(function(kk){return LABEL[kk]+' '+(dims[kk]&&dims[kk].score!=null?dims[kk].score+'%':'—');}).join(', ')+'.';
-    if(/(por que|porque|status|situac|resultado|aprovad|bloque|reprov|proximo passo|e agora|o que acontece|posso enviar|posso submeter)/.test(q))
+    if(/(por que|porque|status|situac|resultado|aprovad|bloque|reprov|proximo passo|e agora|o que acontece|posso enviar|posso submeter|como (esta|anda|vai)|resumo)/.test(q))
       return statusExplanation(ev);
     if(/(voo|passagem|bagagem|check ?in|reembolso|assento|milhas|tudoazul|clima|salario|ferias|\brh\b)/.test(q))
       return 'Tripulante, atuo apenas na triagem deste projeto (avaliação, critérios, riscos e ajustes). Para outros assuntos, procure o canal adequado. Posso ajudar com a avaliação de “'+ev.projectName+'”?';
